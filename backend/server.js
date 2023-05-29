@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
- const app = express();
+const app = express();
 
 app.use(bodyParser.urlencoded({ extended:false }));
 app.use(bodyParser.json());
@@ -24,6 +25,6 @@ app.post('/', (req,res) => {
     console.log(`İsim: ${isim} Soyisim: ${soyisim}`);
 });
 
-app.listen(8080,() => {
-    console.log('8080 listening...');
+app.listen('8080',() => {
+    console.log(`8080 listening`);
 });
