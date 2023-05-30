@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,28 +8,101 @@
     <title>Document</title>
     <link rel="stylesheet" href="output.css">
 </head>
-<body>
-    <div class="dropdown">
-        <label tabindex="0" class="btn m-1">Click</label>
-        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-          <li><a>Item 1</a></li>
-          <li><a>Item 2</a></li>
-        </ul>
-    </div>
-    <div class="form-control">
-        <input type="checkbox" class="toggle" checked />
-    </div>
-    <div class="form-control">
-        <div class="input-group">
-          <select class="select select-bordered">
-            <option disabled selected>Pick category</option>
-            <option>T-shirts</option>
-            <option>Mugs</option>
-          </select>
-          <button class="btn">Go</button>
-        </div>
-      </div>
-    
 
+<body>
+
+    <div class="grid grid-cols-2 grid-rows-2">
+        <div class="col-start-1 col-span-1 row-start-1 row-span-2 border-r-2 border-black" id="list">
+            <div class="overflow-x-auto w-full">
+                <table class="table w-full">
+                    <!-- head -->
+                    <thead>
+                        <tr>
+                            <th>
+                                <label>
+                                    <input type="checkbox" class="checkbox" />
+                                </label>
+                            </th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Rating</th>
+                            <th class="text-center">User Total Rating</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- row 1 -->
+                        <tr>
+                            <th>
+                                <label>
+                                    <input type="checkbox" class="checkbox" />
+                                </label>
+                            </th>
+                            <td class="text-center">
+                                <div class="space-x-3 ">
+                                    <div>
+                                        <div class="font-bold">Hart Hagerty</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                4.2
+                            </td>
+                            <td class="text-center">125</td>
+                            <th>
+                                <button class="btn btn-xs text-center">details</button>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-start-2 col-span-1 row-start-1 row-span-1 mx-10 mt-7" id="properties">
+            <div class="form-control w-full " id="location-input">
+                <label class="label">
+                    <span class="label-text">Location</span>
+                </label>
+                <input type="text" placeholder="Type here" class="input input-bordered w-full " />
+            </div>
+            <br>
+            <div class="flex justify-between">
+                <div id="type-input">
+                    <label class="label">
+                        <span class="label-text">Place Type</span>
+                    </label>
+                    <select class="select select-bordered w-full max-w-xs">
+                        <option>Cafe</option>
+                        <option>Restaurant</option>
+                        <option>Bar</option>
+                        <option>Fast-Food</option>
+                        <option>Bakery</option>
+                    </select>
+                </div>
+                
+                <div class="form-control max-w-xs flex" id="radius-input">
+                    <label class="label">
+                        <span class="label-text">Radius</span>
+                        <input type="checkbox" class="toggle" checked />
+                    </label>
+                    <input type="text" placeholder="Type here" class="input input-bordered max-w-xs mb-2" />
+                    
+                </div>
+                
+                <div class="form-control max-w-xs" id="rating-input">
+                    <label class="label">
+                        <span class="label-text">Rating</span>
+                        <input type="checkbox" class="toggle" checked />
+                    </label>
+                    <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+                </div>
+            </div>
+            <br>
+            <div id="search-button">
+                <button class="btn btn-square flex w-full">Search&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  </button>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
