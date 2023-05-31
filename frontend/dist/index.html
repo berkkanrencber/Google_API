@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="output.css">
+    
 </head>
 
 <body>
@@ -61,12 +62,12 @@
                 <label class="label">
                     <span class="label-text">Location</span>
                 </label>
-                <input type="text" placeholder="Type here" class="input input-bordered w-full " />
+                <input type="text" placeholder="Enter location" class="input input-bordered w-full " />
             </div>
             <br>
             <div class="flex justify-between">
                 <div id="type-input">
-                    <label class="label">
+                    <label class="label style-label">
                         <span class="label-text">Place Type</span>
                     </label>
                     <select class="select select-bordered w-full max-w-xs">
@@ -81,18 +82,18 @@
                 <div class="form-control max-w-xs flex" id="radius-input">
                     <label class="label">
                         <span class="label-text">Radius</span>
-                        <input type="checkbox" class="toggle" checked />
+                        <input type="checkbox" class="toggle" unchecked id="radius-toggle" />
                     </label>
-                    <input type="text" placeholder="Type here" class="input input-bordered max-w-xs mb-2" />
+                    <input type="text" placeholder="Enter radius" class="input input-bordered max-w-xs mb-2" id="radius-input-text" />
                     
                 </div>
                 
                 <div class="form-control max-w-xs" id="rating-input">
                     <label class="label">
                         <span class="label-text">Rating</span>
-                        <input type="checkbox" class="toggle" checked />
+                        <input type="checkbox" class="toggle" unchecked id="rating-toggle"/>
                     </label>
-                    <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+                    <input type="text" placeholder="Enter rating" class="input input-bordered w-full max-w-xs" id="rating-input-text"/>
                 </div>
             </div>
             <br>
@@ -103,6 +104,7 @@
             </div>
         </div>
     </div>
+    <script src="frontend.js"></script>
 </body>
 
 </html>
