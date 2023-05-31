@@ -2,24 +2,31 @@ const radiusToggle=document.querySelector("#radius-toggle");
 const radiusInput=document.querySelector('#radius-input-text');
 const ratingToggle=document.querySelector("#rating-toggle");
 const ratingInput=document.querySelector('#rating-input-text');
+const get = document.getElementById('radius-input-text')
 
-radiusInput.style.visibility="hidden";
-ratingInput.style.visibility="hidden";
+radiusInput.disabled=true;
+ratingInput.disabled=true;
+radiusInput.placeholder="500"
+ratingInput.placeholder="0"
 
 radiusToggle.addEventListener('change',function(){
     if(!radiusToggle.checked){
-        radiusInput.style.visibility="hidden"
+        radiusInput.disabled=true
+        radiusInput.placeholder="500"
     }
     else{
-        radiusInput.style.visibility="visible"
+        radiusInput.disabled=false
+        radiusInput.placeholder="Enter radius"
     }
 })
 
 ratingToggle.addEventListener('change',function(){
     if(!ratingToggle.checked){
-        ratingInput.style.visibility="hidden"
+        ratingInput.disabled=true
+        ratingInput.placeholder="0"
     }
     else{
-        ratingInput.style.visibility="visible"
+        ratingInput.disabled=false
+        ratingInput.placeholder="Enter rating"
     }
 })
