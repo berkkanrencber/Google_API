@@ -1,9 +1,14 @@
-class AutocompleteRequest{
-    constructor(lat, lng, type, radius, rating){
-        this.lat = lat;
-        this.lng = lng;
-        this.type = type;
-        this.radius = radius;
-        this.rating = rating;
-    }
-}
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const requestSchema = new Schema({
+    lat: Number,
+    lng: Number,
+    type: String,
+    radius: Number,
+    rating: Number
+})
+
+const RequestModel = mongoose.model('RequestModel',requestSchema);
+
+module.exports = RequestModel;

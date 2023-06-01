@@ -1,8 +1,18 @@
-class ResponseNearbySearch{
-    constructor(place_id, name, rating, user_ratings_total) {
-        this.place_id = place_id;
-        this.name = name;
-        this.rating = rating;
-        this.user_ratings_total = user_ratings_total;
-    }
-}
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const responseNearbySearchSchema = new Schema({
+    results: [
+        {
+            place_id: String,
+            name: String,
+            formatted_address: String,
+            rating: Number,
+            user_ratings_total: Number,
+        }
+    ]   
+})
+
+const ResponseNearbySearchModel = mongoose.model('ResponseNearbySearchModel',responseNearbySearchSchema);
+
+module.exports = ResponseNearbySearchModel;
