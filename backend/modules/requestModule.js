@@ -1,18 +1,29 @@
 const { json } = require("body-parser");
 const { application } = require("express");
 
-async function sendRequest(data, url, ){
-
-const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    },
-    body: JSON.stringify(data),
-})
-const responseData = await response.json();
-return responseData;
+function sendRequest(url, method, data=null){
+    return new Promise((resolve,reject) => {
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: data === null ? JSON.stringify() : JSON.stringify(data),
+        })
+        .then(response => {
+            if(!response.ok){
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            resolve(data);
+        })
+        .catch(err => {
+            reject(err);
+        })
+    })
 }
 
 module.exports= {
