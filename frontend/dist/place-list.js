@@ -1070,10 +1070,32 @@ const places = {
 }
 
 
-function fetchPlaces(places_array){
+function fetchPlaces(places_array,page){
+
+    let limit=7;
+
+    const lastPage = Math.ceil(places_array.length / limit);
+    const startIndex= (page-1)*limit;
+    const endIndex= page*limit;
+
+    results = [];
+    results= places_array.slice(startIndex,endIndex+1);
+
+//to show exact paging button numbers
+    let placeholder_btn = document.querySelector("#paging-buttons");
+    let out_btn = "";
+    let i;
+    for(i=1; i<=lastPage; i++){
+            out_btn += `
+            <button class="join-item btn" id="btn${i}" onclick="fetchPlaces(places.results,${i});">${i}</button>
+            `;
+            placeholder_btn.innerHTML = out_btn;
+    }
+
+//to list all wished places
     let placeholder = document.querySelector("#data-output");
     let out = "";
-    for(let place of places_array){
+    for(let place of results){
         if(place.rating > 0){
             out += `
                 <tr>
@@ -1098,12 +1120,10 @@ function fetchPlaces(places_array){
                     </th>
                 </tr>
             `;
-        
             placeholder.innerHTML = out;
         }
     }
 }
 
 
-
-fetchPlaces(places.results);
+fetchPlaces(places.results,1);
