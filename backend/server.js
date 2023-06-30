@@ -11,23 +11,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended:false }));
 app.use(bodyParser.json());
 
-
-// app.get('/get/nearby_search', (req,res) => {
-//     var lat = req.body.lat;
-//     var lng = req.body.lng;
-//     var type = req.body.type;
-//     var radius = req.body.radius;
-//     var rating = req.body.rating;
-
-//     sendRequest(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`, 'GET')
-//     .then(data => {
-//         res.json(data);
-//     })
-//     .catch(err => {
-//         console.error(`Error: ${err}`);
-//     })
-// })
-
 async function getAllPlaces(baseUrl, results=[], pageToken=""){
     var url = baseUrl;
     var allResults = [];
@@ -65,9 +48,9 @@ app.get('/get/nearby_search', async (req,res) => {
     var radius = req.query.radius;
     var rating = req.query.rating;
     var responseData = new ResponseNearbySearchModel({results:[]});
-    var results = [];
+    //var results = [];
     
-    responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`,results);
+    responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`);
     res.json(responseData);
     
 })
