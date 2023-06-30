@@ -1,7 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ResponseNearbySearchModel = require('./models/responseNearbySearchModel');
-require('dotenv').config();
+const ResponseDetailModel = require('./models/responseDetailModel');
+const { sendRequest } = require('./modules/requestModule');
+require('dotenv').config({path: '../.env'});
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -9,25 +12,66 @@ app.use(bodyParser.urlencoded({ extended:false }));
 app.use(bodyParser.json());
 
 
+// app.get('/get/nearby_search', (req,res) => {
+//     var lat = req.body.lat;
+//     var lng = req.body.lng;
+//     var type = req.body.type;
+//     var radius = req.body.radius;
+//     var rating = req.body.rating;
 
-app.get('/', (req,res) => {
-    res.send('Merhaba');
+//     sendRequest(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`, 'GET')
+//     .then(data => {
+//         res.json(data);
+//     })
+//     .catch(err => {
+//         console.error(`Error: ${err}`);
+//     })
+// })
+
+async function getAllPlaces(baseUrl, results=[], pageToken=""){
+    var url = baseUrl;
+    var allResults = [];
+    if(pageToken){
+        url = baseUrl + `&pagetoken=${pageToken}`
+    }
+    await sendRequest(url,'GET')
+    .then(data => {
+        for (let i = 0; i < data.results.length; i++) {
+            results.push({
+                place_id:data.results[i].place_id,
+                name:data.results[i].name,
+                formatted_address:data.results[i].vicinity,
+                rating:data.results[i].rating,
+                user_ratings_total:data.results[i].user_ratings_total
+            })
+        }
+        allResults = results;
+        if(data.next_page_token){
+            return new Promise(resolve => setTimeout(resolve, 2000))
+            .then(async () => await getAllPlaces(baseUrl, allResults, data.next_page_token));
+        }
+        
+    })
+    .catch(err => {
+        console.error(`Error: ${err}`);
+        return;
+    })
+    return allResults;
+}
+app.get('/get/nearby_search', async (req,res) => {
+    var lat = req.query.lat;
+    var lng = req.query.lng;
+    var type = req.query.type;
+    var radius = req.query.radius;
+    var rating = req.query.rating;
+    var responseData = new ResponseNearbySearchModel({results:[]});
+    var results = [];
+    
+    responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`,results);
+    res.json(responseData);
+    
 })
 
-app.post('/', (req,res) => {
-    var isim = req.body.isim;
-    var soyisim = req.body.soyisim;
-    res.json({
-        isim: isim,
-        soyisim: soyisim,
-        yas: 22,
-        universite: 'Marmara Universitesi',
-        bolum: 'Bilgisayar Muhendisligi',
-        message: 'Post alindi'
-    })
-    console.log(`İsim: ${isim} Soyisim: ${soyisim}`);
-});
-
-app.listen('8080',() => {
-    console.log(`8080 listening`);
+app.listen(PORT,() => {
+    console.log(`${PORT} listening`);
 });
