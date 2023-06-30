@@ -48,11 +48,33 @@ app.get('/get/nearby_search', async (req,res) => {
     var radius = req.query.radius;
     var rating = req.query.rating;
     var responseData = new ResponseNearbySearchModel({results:[]});
-    //var results = [];
     
     responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`);
     res.json(responseData);
     
+})
+
+app.get('/get/place_detail', (req,res) => {
+    var place_id = req.query.place_id;
+    var responseData = new ResponseDetailModel();
+    var url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&language=tr&reviews_no_translations =false&key=${process.env.API_KEY}`
+    sendRequest(url, 'GET')
+    .then(data => {
+        responseData.place_id = data.result.place_id;
+        responseData.name = data.result.name;
+        responseData.formatted_address = data.formatted_address;
+        responseData.rating = data.result.rating;
+        responseData.user_ratings_total = data.result.user_ratings_total;
+        responseData.types = data.result.types;
+        responseData.international_phone_number = data.result.international_phone_number;
+        responseData.url = data.result.url;
+        responseData.reviews = data.result.reviews; //review format => [{author_name, author_url, language, original_language, profile_photo_url, rating, relative_time_description, text, time, translated}]
+        responseData.weekday_text = data.result.opening_hours.weekday_text;
+        res.json(responseData);
+    })
+    .catch(err => {
+        console.error(`Error: ${err}`);
+    })
 })
 
 app.listen(PORT,() => {
