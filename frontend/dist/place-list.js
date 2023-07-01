@@ -1072,12 +1072,13 @@ let URL = 'http://localhost:8080/get/nearby_search?lat=40.985797&lng=29.025188&r
     "status": "OK"
 
 }*/
-
+let places;
 function clickRequest(){
     sendRequest(URL, 'GET')
-        .then(data => {
-            console.log(JSON.stringify(data))
-            fetchPlaces(data.results, 1)
+        .then(data => {   
+            places = data;
+            //console.log(JSON.stringify(places.results))
+            createPageButtons(places.results,7);
         })
         .catch(err => {
             console.error(err)
@@ -1087,33 +1088,18 @@ function clickRequest(){
 
 document.getElementById('button-search-button').addEventListener('click', clickRequest);
 
-function fetchPlaces(places_array,page){
-
-    let limit=7;
-
-    const lastPage = Math.ceil(places_array.length / limit);
+function getPlacesWithPage(places_array,page,limit){
     const startIndex= (page-1)*limit;
     const endIndex= page*limit;
 
     let results = [];
-    results= places_array.slice(startIndex,endIndex+1);
+    results= places_array.slice(startIndex,endIndex);
+    console.log(results);
 
-//to show exact paging button numbers
-    let placeholder_btn = document.querySelector("#paging-buttons");
-    let out_btn = "";
-    let i;
-    for(i=1; i<=lastPage; i++){
-            out_btn += `
-            <button class="join-item btn" id="btn${i}" onclick="fetchPlaces(places.results,${i});">${i}</button>
-            `;
-            placeholder_btn.innerHTML = out_btn;
-    }
-
-//to list all wished places
+    //to list all wished places
     let placeholder = document.querySelector("#data-output");
     let out = "";
     for(let place of results){
-        if(place.rating > 0){
             out += `
                 <tr>
                     <th>
@@ -1138,9 +1124,92 @@ function fetchPlaces(places_array,page){
                 </tr>
             `;
             placeholder.innerHTML = out;
-        }
     }
 }
+
+function createPageButtons(places_array,limit){
+    const lastPage = Math.ceil(places_array.length / limit);
+
+//to show exact paging button numbers
+    let placeholder_btn = document.querySelector("#paging-buttons");
+    let out_btn = "";
+    let i;
+    for(i=1; i<=lastPage; i++){
+            out_btn += `
+            <button class="join-item btn" id="btn${i}">${i}</button>
+            `;
+    }
+    placeholder_btn.innerHTML = out_btn;
+
+    getPlacesWithPage(places_array,1,limit);
+
+    let buttons = document.querySelectorAll('.join-item');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            let page = parseInt(button.innerText);
+            console.log(button.innerText);
+            getPlacesWithPage(places.results,page, 7);
+        })
+    })
+}
+
+// function fetchPlaces(places_array,page){
+
+//     let limit=7;
+
+//     const lastPage = Math.ceil(places_array.length / limit);
+//     const startIndex= (page-1)*limit;
+//     const endIndex= page*limit;
+
+//     let results = [];
+//     results= places_array.slice(startIndex,endIndex+1);
+
+    
+
+// //to show exact paging button numbers
+//     let placeholder_btn = document.querySelector("#paging-buttons");
+//     let out_btn = "";
+//     let i;
+//     for(i=1; i<=lastPage; i++){
+//             out_btn += `
+//             <button class="join-item btn" id="btn${i}" onclick="fetchPlaces(places.results,${i})">${i}</button>
+//             `;
+//             placeholder_btn.innerHTML = out_btn;
+//     }
+
+// //to list all wished places
+//     let placeholder = document.querySelector("#data-output");
+//     let out = "";
+//     for(let place of results){
+//         if(place.rating > 0){
+//             out += `
+//                 <tr>
+//                     <th>
+//                         <label>
+//                             <input type="checkbox" class="checkbox" />
+//                         </label>
+//                     </th>
+//                     <td class="text-center">
+//                         <div class="space-x-3 ">
+//                             <div>
+//                                 <div class="font-bold">${place.name}</div>
+//                             </div>
+//                         </div>
+//                     </td>
+//                     <td class="text-center">
+//                         ${place.rating}
+//                     </td>
+//                     <td class="text-center">${place.user_ratings_total}</td>
+//                     <th>
+//                         <label for="my-drawer-4" class="drawer-button btn">Details</label>
+//                     </th>
+//                 </tr>
+//             `;
+//             placeholder.innerHTML = out;
+//         }
+//     }
+// }
+
 
 
 
