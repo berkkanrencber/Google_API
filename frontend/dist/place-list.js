@@ -1,4 +1,8 @@
-const places = {
+import { sendRequest } from "../send-request.js";
+
+let URL = 'http://localhost:8080/get/nearby_search?lat=40.985797&lng=29.025188&radius=500&type=restaurant&rating=3.5'
+
+/*const places = {
     "html_attributions": [],
     "next_page_token": "AZose0nzlEyavfKLzH2EYdU1Fh0A5AAMbqv3PuKi_ZXIeHfS4sYQN0hYnvcp4x-40jyp6CzwCOwGNfXotU8hQbsy-gxqhcyFw7ZG-mrUMFqTvqMyDGv_SfeWznsEZt8CFUc-eA0_B_RfUYYhAfBjHPMrDHu3cVArQIdSe8-Co8hztYcj-vzMjVsmX1UWMsoIT7xlDubqAC3pr_Z78N3LfzJkn0Dnd2qqax0JQ1A8KqnpjUz_3ofEOGouwAd5I1ifA7K8yXvdJ42rf4fpKZzKQdwU2yjhoX69mggJncRYWQIatoTSkdLfu1ae7kCxmVijOZD_p5HPuIyc1AQ255wiJOk32AuEUfU7hhimrjYCogdVix1NYIeGg_291mEX8ZyfObiXJApXcUZVuBdc4PR_CC1ZiuBotbckAk-VjGZ-IB-52XDv0cn66CC8D1wgYDZM",
     "results": [
@@ -1067,8 +1071,21 @@ const places = {
     ],
     "status": "OK"
 
+}*/
+
+function clickRequest(){
+    sendRequest(URL, 'GET')
+        .then(data => {
+            console.log(JSON.stringify(data))
+            fetchPlaces(data.results, 1)
+        })
+        .catch(err => {
+            console.error(err)
+        })
+    console.log('click')
 }
 
+document.getElementById('button-search-button').addEventListener('click', clickRequest);
 
 function fetchPlaces(places_array,page){
 
@@ -1078,7 +1095,7 @@ function fetchPlaces(places_array,page){
     const startIndex= (page-1)*limit;
     const endIndex= page*limit;
 
-    results = [];
+    let results = [];
     results= places_array.slice(startIndex,endIndex+1);
 
 //to show exact paging button numbers
@@ -1126,4 +1143,5 @@ function fetchPlaces(places_array,page){
 }
 
 
-fetchPlaces(places.results,1);
+
+
