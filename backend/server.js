@@ -10,6 +10,13 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended:false }));
 app.use(bodyParser.json());
+// CORS ayarları
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Tüm kaynaklardan gelen isteklere izin vermek için '*'
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 
 async function getAllPlaces(baseUrl, results=[], pageToken=""){
     var url = baseUrl;
