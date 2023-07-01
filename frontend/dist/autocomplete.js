@@ -1,8 +1,9 @@
 let autocomplete;
 
-var script = document.createElement("script");
-script.src = "https://maps.googleapis.com/maps/api/js?key=&callback=initMap&libraries=places&v=weekly";
-document.head.appendChild(script);
+// var script = document.createElement("script");
+// script.id = "autocomplete-script";
+// script.src = "https://maps.googleapis.com/maps/api/js?key=&callback=initMap&libraries=places&v=weekly";
+// document.head.appendChild(script);
 
 function searchAutocomplete(){
   autocomplete = new google.maps.places.Autocomplete((document.getElementById('autocomplete')),
