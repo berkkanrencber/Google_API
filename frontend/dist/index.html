@@ -19,7 +19,7 @@
                             <label class="label">
                                 <span class="label-text">Location</span>
                             </label>
-                            <input type="text" id="autocomplete" placeholder="Enter location" class="input input-bordered w-full " />
+                            <input type="text" id="autocomplete" placeholder="Enter location" class="input input-bordered w-full " onkeyup="onChangeLocation()"/>
                         </div>
                         <br>
                         <div class="flex flex-col w-full lg:flex-row">
@@ -31,7 +31,6 @@
                                     <option>Cafe</option>
                                     <option>Restaurant</option>
                                     <option>Bar</option>
-                                    <option>Fast-Food</option>
                                     <option>Bakery</option>
                                 </select>
                             </div>
@@ -100,7 +99,6 @@
             <script src="frontend.js"></script>
             <script type="module" src="place-list.js"></script>
             <script src="autocomplete.js"></script>
-            <script src="user-input-control.js"></script>
             <!-- Page content here -->
         </div>
 

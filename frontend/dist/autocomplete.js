@@ -23,4 +23,9 @@ function findLocation(){
     console.log(place.geometry.location.lng())
 }
 
+function onChangeLocation(){
+  var location = document.getElementById('autocomplete').value;
+  console.log(location);
+}
+
 window.initMap = searchAutocomplete;
