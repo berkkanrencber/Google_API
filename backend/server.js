@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ResponseNearbySearchModel = require('./models/responseNearbySearchModel');
 const ResponseDetailModel = require('./models/responseDetailModel');
+const ResponseAutocompleteModel = require('./models/responseAutocompleteModel');
 const { sendRequest } = require('./modules/requestModule');
-const fs = require('fs');
-const { JSDOM } = require('jsdom');
+const path = require('path');
 require('dotenv').config({path: '../.env'});
 const PORT = process.env.PORT || 3000;
 
@@ -12,31 +12,6 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended:false }));
 app.use(bodyParser.json());
-//Autocomplete set
-
-fs.readFile('../frontend/dist/index.html','utf-8',(err,data) => {
-    if(err){
-        console.error(`Error: ${err}`);
-        return;
-    }
-    const html = data;
-    const dom = new JSDOM(html);
-    const document = dom.window.document;
-
-    var script = document.createElement("script");
-    script.id = "autocomplete-script";
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&callback=initMap&libraries=places&v=weekly`;
-    document.head.appendChild(script);
-
-    const updated_html = dom.serialize();
-    
-    fs.appendFile('../frontend/dist/index.html',updated_html,'utf-8',(err) => {
-        if(err){
-            console.error(`Error: ${err}`);
-            return
-        }
-    })
-})
 
 // CORS ayarları
 app.use((req, res, next) => {
@@ -110,6 +85,27 @@ app.get('/get/place_detail', (req,res) => {
     .catch(err => {
         console.error(`Error: ${err}`);
     })
+})
+
+app.get('/get/autocomplete', (req,res) => {
+    var input = req.query.input;
+    var responseData = new ResponseAutocompleteModel();
+    var url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&types=geocode&key=${process.env.API_KEY}`;
+
+    sendRequest(url, 'GET')
+    .then(data => {
+        for(let i = 0; i < data.predictions.length; i++){
+            responseData.predictions.push({
+                place_id : data.predictions[i].place_id,
+                description : data.predictions[i].description
+            })
+        }
+        res.json(responseData)
+    })
+    .catch(err => {
+        console.error(`Error: ${err}`);
+    })
+
 })
 
 app.listen(PORT,() => {
