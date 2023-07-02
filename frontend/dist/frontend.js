@@ -11,12 +11,15 @@ radiusInput.disabled=true;
 ratingInput.disabled=true;
 radiusInput.placeholder="500"
 ratingInput.placeholder="0"
+radiusInput.value="500"
+ratingInput.value="0"
 
 
 radiusToggle.addEventListener('change',function(){
     if(!radiusToggle.checked){
         radiusInput.disabled=true
         radiusInput.placeholder="500"
+        radiusInput.value="500"
     }
     else{
         radiusInput.disabled=false
@@ -28,6 +31,7 @@ ratingToggle.addEventListener('change',function(){
     if(!ratingToggle.checked){
         ratingInput.disabled=true
         ratingInput.placeholder="0"
+        ratingInput.value="0"
     }
     else{
         ratingInput.disabled=false
