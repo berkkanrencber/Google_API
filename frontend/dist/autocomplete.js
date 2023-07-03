@@ -50,3 +50,7 @@ function setSelectedLocationId(id){
   console.log(id);
   selectedLocationId = id;
 }
+
+export function getLocationId(){
+  return selectedLocationId;
+}
