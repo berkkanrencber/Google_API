@@ -5,6 +5,7 @@ const ResponseDetailModel = require('./models/responseDetailModel');
 const ResponseAutocompleteModel = require('./models/responseAutocompleteModel');
 const { sendRequest } = require('./modules/requestModule');
 const path = require('path');
+const { send } = require('process');
 require('dotenv').config({path: '../.env'});
 const PORT = process.env.PORT || 3000;
 
@@ -52,15 +53,24 @@ async function getAllPlaces(baseUrl, results=[], pageToken=""){
     return allResults;
 }
 app.get('/get/nearby_search', async (req,res) => {
-    var lat = req.query.lat;
-    var lng = req.query.lng;
+    var place_id = req.query.place_id;
     var type = req.query.type;
     var radius = req.query.radius;
     var rating = req.query.rating;
     var responseData = new ResponseNearbySearchModel({results:[]});
+    var url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&language=tr&reviews_no_translations =false&key=${process.env.API_KEY}`
     
-    responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`);
-    res.json(responseData);
+    sendRequest(url, 'GET')
+    .then(async (data) => {
+        var lat = data.result.geometry.location.lat
+        var lng = data.result.geometry.location.lng
+        responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`);
+        res.json(responseData);
+    })
+    .catch(err => {
+        console.error(`Error: ${err}`);
+    })
+
     
 })
 

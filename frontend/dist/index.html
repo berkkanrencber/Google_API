@@ -19,7 +19,9 @@
                             <label class="label">
                                 <span class="label-text">Location</span>
                             </label>
-                            <input type="text" id="autocomplete" placeholder="Enter location" class="input input-bordered w-full " onkeyup="onChangeLocation()"/>
+                            <input type="text" id="autocomplete" placeholder="Enter location" class="input input-bordered w-full "/>
+                        </div>
+                        <div class="result-box" id="result-box">
                         </div>
                         <br>
                         <div class="flex flex-col w-full lg:flex-row">
@@ -68,7 +70,7 @@
                 <div class="grid flex-grow card bg-base-300 rounded-box place-items-center" id="list">
                     <div class="overflow-x-auto w-full">
                         <table class="table w-full">
-                            <!-- head -->
+                            
                             <thead>
                                 <tr>
                                     <th>
@@ -84,7 +86,7 @@
                             </thead>
                             <tbody id="data-output">
                             </tbody>
-
+                            
                         </table>
 
                         
@@ -98,7 +100,7 @@
             </div>
             <script src="frontend.js"></script>
             <script type="module" src="place-list.js"></script>
-            <script src="autocomplete.js"></script>
+            <script type="module" src="autocomplete.js"></script>
             <!-- Page content here -->
         </div>
 
