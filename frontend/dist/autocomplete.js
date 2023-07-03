@@ -24,15 +24,16 @@ function onChangeLocation(){
 function displayResults(result) {
 
   const ul = document.createElement('ul');
-
+  ul.className= "menu bg-base-200 w-100 rounded-box";
     for (let i = 0; i < result.length; i++) {
         const li = document.createElement('li');
-        li.className = "list-none rounded-sm py-2 px-2 bg-white cursor-pointer hover:bg-slate-300";
-        li.textContent = result[i].description;
-        li.onclick = () => {
+        const aTag = document.createElement('a');
+        aTag.textContent = result[i].description;
+        aTag.onclick = () => {
           selectInput(result[i].description);
           setSelectedLocationId(result[i].place_id);
         }
+        li.appendChild(aTag);
         ul.appendChild(li);
     }
 

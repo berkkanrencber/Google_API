@@ -43,9 +43,9 @@ function getPlacesWithPage(places_array,page,limit){
                         </label>
                     </th>
                     <td class="text-center">
-                        <div class="space-x-3 ">
+                        <div class="overflow-hidden">
                             <div>
-                                <div class="font-bold">${place.name}</div>
+                                <div class="font-bold w-48 overflow-hidden">${place.name}</div>
                             </div>
                         </div>
                     </td>
