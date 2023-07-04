@@ -1,13 +1,14 @@
 import { sendRequest } from "../send-request.js";
 import { place_types } from "./place-types.js";
 import { getLocationId } from "./autocomplete.js";
+import { getMarkedPlaceId } from "./geocoding.js";
 
 let places;
 function clickRequest(){
     var typeValue=document.getElementById('input-type');
     var radiusValue=document.getElementById('radius-input-text').value;
     var ratingValue=document.getElementById('rating-input-text').value;
-    var place_id = getLocationId();
+    var place_id = getLocationId() ? getLocationId() : getMarkedPlaceId();
     let URL = `http://localhost:8080/get/nearby_search?place_id=${place_id}&radius=${radiusValue}&type=${place_types[typeValue.selectedIndex]}&rating=${ratingValue}`
 
     sendRequest(URL, 'GET')

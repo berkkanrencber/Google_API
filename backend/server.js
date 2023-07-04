@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const ResponseNearbySearchModel = require('./models/responseNearbySearchModel');
 const ResponseDetailModel = require('./models/responseDetailModel');
 const ResponseAutocompleteModel = require('./models/responseAutocompleteModel');
+const ResponseGeocodeModel = require('./models/responseGeocodeModel');
 const { sendRequest } = require('./modules/requestModule');
 const path = require('path');
 const { send } = require('process');
@@ -116,6 +117,21 @@ app.get('/get/autocomplete', (req,res) => {
         console.error(`Error: ${err}`);
     })
 
+})
+
+app.get('/get/place',(req,res) => {
+    var latlng = `${req.query.lat},${req.query.lng}`
+    var responseData = new ResponseGeocodeModel;
+    var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${process.env.API_KEY}`
+    sendRequest(url, 'GET')
+    .then(data => {
+        responseData.result.place_id = data.results[0].place_id;
+        responseData.result.formatted_address = data.results[0].formatted_address;
+        res.json(responseData);
+    })
+    .catch(err => {
+        console.error(`Error: ${err}`);
+    })
 })
 
 app.listen(PORT,() => {

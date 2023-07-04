@@ -13,7 +13,7 @@
         <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content">
             <div class="flex flex-col w-full lg:flex-row">
-                <div class="grid flex-grow h-1/2 card bg-base-300 rounded-box place-items-center">
+                <div class="flex-grow h-full card bg-base-300 rounded-box place-items-center" id="inputs">
                     <div class="mt-7" id="properties">
                         <div class="form-control w-full " id="location-input">
                             <label class="label">
@@ -66,8 +66,9 @@
                             </button>
                         </div>
                     </div>
+                    <div id="map" class="bg-gray-500 h-96 w-full border-gray-700 border-4"></div>
                 </div>
-                <div class="grid flex-grow card bg-base-300 rounded-box place-items-center" id="list">
+                <div class="flex-grow card bg-base-300 rounded-box place-items-center" id="list">
                     <div class="overflow-x-auto w-full">
                         <table class="table w-full">
                             
@@ -96,12 +97,18 @@
                           
                     </div>
                 </div>
-
+                
             </div>
+            
             <script src="frontend.js"></script>
+            <script type="module" src="geocoding.js"></script>
             <script type="module" src="place-list.js"></script>
             <script type="module" src="autocomplete.js"></script>
             <!-- Page content here -->
+            <script
+                src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&v=weekly"
+                    defer
+            ></script>
         </div>
 
         <!-- Place Detail Side -->
