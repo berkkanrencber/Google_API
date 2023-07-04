@@ -36,8 +36,8 @@ async function getAllPlaces(baseUrl, results=[], pageToken=""){
                 place_id:data.results[i].place_id,
                 name:data.results[i].name,
                 formatted_address:data.results[i].vicinity,
-                rating:data.results[i].rating,
-                user_ratings_total:data.results[i].user_ratings_total
+                rating:data.results[i].rating ? data.results[i].rating : 0,
+                user_ratings_total:data.results[i].user_ratings_total ? data.results[i].user_ratings_total : 0
             })
         }
         allResults = results;
@@ -67,6 +67,7 @@ app.get('/get/nearby_search', async (req,res) => {
         var lng = data.result.geometry.location.lng
         responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`);
         res.json(responseData);
+        console.log(JSON.stringify(responseData));
     })
     .catch(err => {
         console.error(`Error: ${err}`);
@@ -84,8 +85,8 @@ app.get('/get/place_detail', (req,res) => {
         responseData.place_id = data.result.place_id;
         responseData.name = data.result.name;
         responseData.formatted_address = data.result.formatted_address;
-        responseData.rating = data.result.rating;
-        responseData.user_ratings_total = data.result.user_ratings_total;
+        responseData.rating = data.result.rating ? data.result.rating : 0;
+        responseData.user_ratings_total = data.result.user_ratings_total ? data.result.user_ratings_total : 0;
         responseData.types = data.result.types;
         responseData.international_phone_number = data.result.international_phone_number;
         responseData.url = data.result.url;
