@@ -1,5 +1,8 @@
+import { sendRequest } from "../send-request.js";
+
 let selectedLat;
 let selectedLng;
+let selectedPlaceId;
 
 function initMap() {
     const myLatlng = { lat: 40.99, lng: 29.07 };
@@ -29,19 +32,24 @@ function initMap() {
       selectedLat = mapsMouseEvent.latLng.toJSON().lat;
       selectedLng = mapsMouseEvent.latLng.toJSON().lng;
       console.log(mapsMouseEvent.latLng.toJSON().lat + " " + mapsMouseEvent.latLng.toJSON().lng);
+      let url = `http://localhost:8080/get/place?lat=${selectedLat}&lng=${selectedLng}`
+      sendRequest(url,'GET')
+      .then(data => {
+        document.getElementById('autocomplete').value = data.result.formatted_address;
+        selectedPlaceId = data.result.place_id;
+      })
+      .catch(err => {
+        console.log(`Error: ${err}`);
+      })
     });
 }
-  
-function getLat(){
-    return selectedLat;
-}
 
-function getLng(){
-    return selectedLng;
+function getMarkedPlaceId(){
+  return selectedPlaceId;
 }
 
 export {
-    getLat, getLng
+  getMarkedPlaceId
 };
 
 window.initMap = initMap;
