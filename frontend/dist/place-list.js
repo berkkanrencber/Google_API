@@ -121,8 +121,12 @@ const place_user_total_rating = document.getElementById('place-user-total-rating
 const place_url = document.getElementById('place-url');
 const place_weekday_text = document.getElementById('place-weekday-text');
 const place_type = document.getElementById('place-types');
+const place_review = document.getElementById('place-reviews');
 
 function fetchDetails(place_details_array){
+
+    let reviews = [];
+    reviews = place_details_array.reviews; 
 
     place_name.innerHTML = place_details_array.name;
     place_rating.innerHTML = place_details_array.rating;
@@ -131,6 +135,7 @@ function fetchDetails(place_details_array){
     place_user_total_rating.innerHTML = place_details_array.user_ratings_total;
     place_url.innerHTML = place_details_array.url;
     place_url.href = place_details_array.url;
+
 
 
     place_weekday_text.innerHTML = "";
@@ -145,5 +150,40 @@ function fetchDetails(place_details_array){
         var li = document.createElement("li");
         li.appendChild(document.createTextNode(place_details_array.types[i]));
         place_type.appendChild(li);
+    }
+
+    let out="";
+    let index=0;
+    for(let review of reviews){
+        out+=`
+        <div class="chat chat-start">
+        <div class="chat-image avatar">
+          <div class="w-10 rounded-full">
+            <img src="${review.profile_photo_url}" />
+          </div>
+        </div>
+        <div class="chat-header">
+          ${review.author_name}
+          <time class="text-xs opacity-50">${review.relative_time_description}</time>
+        </div>
+        <div class="chat-bubble">${review.text}</div>
+        <div class="chat-footer opacity-50">
+            <div class="rating rating-sm">
+                <input type="radio" name="rating-${review.rating}-${index}" class="mask mask-star-2 bg-orange-400" id="star-1-${index}" onclick="javascript: return false" />
+                <input type="radio" name="rating-${review.rating}-${index}" class="mask mask-star-2 bg-orange-400" id="star-2-${index}" onclick="javascript: return false" />
+                <input type="radio" name="rating-${review.rating}-${index}" class="mask mask-star-2 bg-orange-400" id="star-3-${index}" onclick="javascript: return false" />
+                <input type="radio" name="rating-${review.rating}-${index}" class="mask mask-star-2 bg-orange-400" id="star-4-${index}" onclick="javascript: return false" />
+                <input type="radio" name="rating-${review.rating}-${index}" class="mask mask-star-2 bg-orange-400" id="star-5-${index}" onclick="javascript: return false" />
+            </div>
+        </div>
+        </div>
+        `
+        place_review.innerHTML=out;
+        console.log(`star-${review.rating}-${index}`);
+        index++;
+    }
+
+    for(let i=0; i<reviews.length; i++){
+        document.getElementById(`star-${reviews[i].rating}-${i}`).checked=true;
     }
 }
