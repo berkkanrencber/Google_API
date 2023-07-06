@@ -55,13 +55,37 @@ function getPlacesWithPage(places_array,page,limit){
                     </td>
                     <td class="text-center">${place.user_ratings_total}</td>
                     <th>
-                        <label for="my-drawer-4" class="drawer-button btn">Details</label>
+                        <label for="my-drawer-4" class="drawer-button btn" id="${place.place_id}">Details</label>
                     </th>
                 </tr>
             `;
             placeholder.innerHTML = out;
     }
+    for(let i = 0; i < results.length; i++){
+        document.getElementsByClassName('drawer-button')[i].addEventListener('click', fetchPlaceDetails);
+        document.getElementsByClassName('drawer-button')[i].param = document.getElementsByClassName('drawer-button')[i].id;
+    }
+    
 }
+
+function fetchPlaceDetails(place_id){
+
+    console.log(place_id.currentTarget.param);
+
+    let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
+
+    sendRequest(URL, 'GET')
+        .then(data => {   
+            console.log('open details');
+            console.log(JSON.stringify(data));
+            fetchDetails(data);
+        })
+        .catch(err => {
+            console.error(err)
+        })
+
+    console.log(URL);
+}  
 
 function createPageButtons(places_array,limit){
     const lastPage = Math.ceil(places_array.length / limit);
@@ -89,64 +113,37 @@ function createPageButtons(places_array,limit){
     })
 }
 
-// function fetchPlaces(places_array,page){
+const place_name = document.getElementById('place-name');
+const place_rating = document.getElementById('place-rating');
+const place_address = document.getElementById('place-address');
+const place_phone = document.getElementById('place-phone');
+const place_user_total_rating = document.getElementById('place-user-total-rating');
+const place_url = document.getElementById('place-url');
+const place_weekday_text = document.getElementById('place-weekday-text');
+const place_type = document.getElementById('place-types');
 
-//     let limit=7;
+function fetchDetails(place_details_array){
 
-//     const lastPage = Math.ceil(places_array.length / limit);
-//     const startIndex= (page-1)*limit;
-//     const endIndex= page*limit;
-
-//     let results = [];
-//     results= places_array.slice(startIndex,endIndex+1);
-
-    
-
-// //to show exact paging button numbers
-//     let placeholder_btn = document.querySelector("#paging-buttons");
-//     let out_btn = "";
-//     let i;
-//     for(i=1; i<=lastPage; i++){
-//             out_btn += `
-//             <button class="join-item btn" id="btn${i}" onclick="fetchPlaces(places.results,${i})">${i}</button>
-//             `;
-//             placeholder_btn.innerHTML = out_btn;
-//     }
-
-// //to list all wished places
-//     let placeholder = document.querySelector("#data-output");
-//     let out = "";
-//     for(let place of results){
-//         if(place.rating > 0){
-//             out += `
-//                 <tr>
-//                     <th>
-//                         <label>
-//                             <input type="checkbox" class="checkbox" />
-//                         </label>
-//                     </th>
-//                     <td class="text-center">
-//                         <div class="space-x-3 ">
-//                             <div>
-//                                 <div class="font-bold">${place.name}</div>
-//                             </div>
-//                         </div>
-//                     </td>
-//                     <td class="text-center">
-//                         ${place.rating}
-//                     </td>
-//                     <td class="text-center">${place.user_ratings_total}</td>
-//                     <th>
-//                         <label for="my-drawer-4" class="drawer-button btn">Details</label>
-//                     </th>
-//                 </tr>
-//             `;
-//             placeholder.innerHTML = out;
-//         }
-//     }
-// }
+    place_name.innerHTML = place_details_array.name;
+    place_rating.innerHTML = place_details_array.rating;
+    place_address.innerHTML = place_details_array.formatted_address;
+    place_phone.innerHTML = place_details_array.international_phone_number;
+    place_user_total_rating.innerHTML = place_details_array.user_ratings_total;
+    place_url.innerHTML = place_details_array.url;
+    place_url.href = place_details_array.url;
 
 
+    place_weekday_text.innerHTML = "";
+    for(let i = 0; i < place_details_array.weekday_text.length; i++){
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(place_details_array.weekday_text[i]));
+        place_weekday_text.appendChild(li);
+    }
 
-
-
+    place_type.innerHTML = "";
+    for(let i = 0; i < place_details_array.types.length; i++){
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(place_details_array.types[i]));
+        place_type.appendChild(li);
+    }
+}
