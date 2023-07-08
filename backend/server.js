@@ -37,7 +37,8 @@ async function getAllPlaces(baseUrl, results=[], pageToken=""){
                 name:data.results[i].name,
                 formatted_address:data.results[i].vicinity,
                 rating:data.results[i].rating ? data.results[i].rating : 0,
-                user_ratings_total:data.results[i].user_ratings_total ? data.results[i].user_ratings_total : 0
+                user_ratings_total:data.results[i].user_ratings_total ? data.results[i].user_ratings_total : 0,
+                location: data.results[i].geometry.location 
             })
         }
         allResults = results;

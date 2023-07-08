@@ -9,6 +9,10 @@ const responseNearbySearchSchema = new Schema({
             formatted_address: String,
             rating: Number,
             user_ratings_total: Number,
+            location: {
+                lat: Number,
+                lng: Number
+            }
         }
     ]   
 })
