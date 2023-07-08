@@ -67,7 +67,6 @@ app.get('/get/nearby_search', async (req,res) => {
         var lng = data.result.geometry.location.lng
         responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`);
         res.json(responseData);
-        console.log(JSON.stringify(responseData));
     })
     .catch(err => {
         console.error(`Error: ${err}`);
@@ -88,10 +87,10 @@ app.get('/get/place_detail', (req,res) => {
         responseData.rating = data.result.rating ? data.result.rating : 0;
         responseData.user_ratings_total = data.result.user_ratings_total ? data.result.user_ratings_total : 0;
         responseData.types = data.result.types;
-        responseData.international_phone_number = data.result.international_phone_number;
+        responseData.international_phone_number = data.result.international_phone_number ? data.result.international_phone_number : ["Telefon numarası bilgisi bulunamadı."]
         responseData.url = data.result.url;
-        responseData.reviews = data.result.reviews; //review format => [{author_name, author_url, language, original_language, profile_photo_url, rating, relative_time_description, text, time, translated}]
-        responseData.weekday_text = data.result.opening_hours.weekday_text;
+        responseData.reviews = data.result.reviews ? data.result.reviews : []; //review format => [{author_name, author_url, language, original_language, profile_photo_url, rating, relative_time_description, text, time, translated}]
+        responseData.weekday_text = data.result.opening_hours === undefined ? ["Saat bilgisi bulunamadı."] : data.result.opening_hours.weekday_text ;
         res.json(responseData);
     })
     .catch(err => {

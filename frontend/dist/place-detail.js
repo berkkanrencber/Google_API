@@ -466,26 +466,6 @@ const place_details = {
     "status": "OK"
 }
 
-function fetchPlaceDetails(place_details_array){
 
-    place_name.innerHTML = place_details_array.name;
-    place_rating.innerHTML = place_details_array.rating;
-    place_address.innerHTML = place_details_array.formatted_address;
-    place_phone.innerHTML = place_details_array.international_phone_number;
-    place_user_total_rating.innerHTML = place_details_array.user_ratings_total;
-    place_url.innerHTML = place_details_array.url;
+ 
 
-    for(i = 0; i < place_details_array.opening_hours.weekday_text.length; i++){
-        var li = document.createElement("li");
-        li.appendChild(document.createTextNode(place_details_array.opening_hours.weekday_text[i]));
-        place_weekday_text.appendChild(li);
-    }
-
-    for(i = 0; i < place_details_array.types.length; i++){
-        var li = document.createElement("li");
-        li.appendChild(document.createTextNode(place_details_array.types[i]));
-        place_types.appendChild(li);
-    }
-}
-
-fetchPlaceDetails(place_details.result);
