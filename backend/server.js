@@ -5,6 +5,7 @@ const ResponseDetailModel = require('./models/responseDetailModel');
 const ResponseAutocompleteModel = require('./models/responseAutocompleteModel');
 const ResponseGeocodeModel = require('./models/responseGeocodeModel');
 const { sendRequest } = require('./modules/requestModule');
+const { checkProperty } = require('./modules/filter');
 const path = require('path');
 const { send } = require('process');
 require('dotenv').config({path: '../.env'});
@@ -67,6 +68,7 @@ app.get('/get/nearby_search', async (req,res) => {
         var lat = data.result.geometry.location.lat
         var lng = data.result.geometry.location.lng
         responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`);
+        responseData.results = checkProperty(responseData.results, rating, 0);
         res.json(responseData);
     })
     .catch(err => {

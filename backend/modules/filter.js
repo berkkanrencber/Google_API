@@ -1,13 +1,13 @@
 
 let lastResults=[];
-var ratingValue=document.getElementById('rating-input-text').value;
-var totalRatingValue=document.getElementById('total-rating-input-text').value;  //totalRatingInput.value tanımlanacak
+
 
 function checkProperty(places, rating, totalRating){ 
+    lastResults = [];
     if (rating==0 && totalRating==0)
         return places;
     for(let place of places){
-        if(place.rating >= ratingValue && place_user_total_rating >= totalRatingValue) 
+        if(place.rating >= rating && place.user_ratings_total >= totalRating) 
             lastResults.push(place);
     }
     return lastResults;
