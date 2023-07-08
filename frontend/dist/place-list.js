@@ -70,21 +70,16 @@ function getPlacesWithPage(places_array,page,limit){
 
 function fetchPlaceDetails(place_id){
 
-    console.log(place_id.currentTarget.param);
-
     let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
 
     sendRequest(URL, 'GET')
         .then(data => {   
-            console.log('open details');
-            console.log(JSON.stringify(data));
             fetchDetails(data);
         })
         .catch(err => {
             console.error(err)
         })
 
-    console.log(URL);
 }  
 
 function createPageButtons(places_array,limit){
