@@ -20,9 +20,33 @@ function clickRequest(){
             console.error(err)
         })
     console.log('click')
+    loadingAnimation();
 }
 
 document.getElementById('button-search-button').addEventListener('click', clickRequest);
+document.getElementById('export-btn').style.visibility = "hidden";
+
+function loadingAnimation(){
+    document.querySelector("#data-output").innerHTML="";
+    let loading = document.querySelector("#paging-buttons");
+    loading.innerHTML="";
+    let i;
+    for(i=0; i<7; i++)
+    loading.innerHTML += `<div class="border-b-2 border-gray-600 shadow m-4 p-4 max-w-xxl w-full mx-auto">
+  <div class="animate-pulse  flex space-x-4">
+    <div class=" bg-slate-700 h-7 w-7"></div>
+    <div class="flex-1 space-y-6 py-1">
+      <div class="space-y-3">
+        <div class="grid grid-cols-3 gap-4">
+          <div class="h-2 bg-slate-700 rounded col-span-1"></div>
+          <div class="h-2 bg-slate-700 rounded col-span-1"></div>
+          <div class="h-2 bg-slate-700 rounded col-span-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`
+}
 
 function getPlacesWithPage(places_array,page,limit){
     const startIndex= (page-1)*limit;
@@ -40,7 +64,7 @@ function getPlacesWithPage(places_array,page,limit){
                 <tr>
                     <th>
                         <label>
-                            <input type="checkbox" class="checkbox" />
+                            <input type="checkbox" class="checkbox" id="c${place.place_id}" ${selected_places.includes(`c${place.place_id}`)?'checked':''}/>
                         </label>
                     </th>
                     <td class="text-center">
@@ -64,8 +88,31 @@ function getPlacesWithPage(places_array,page,limit){
     for(let i = 0; i < results.length; i++){
         document.getElementsByClassName('drawer-button')[i].addEventListener('click', fetchPlaceDetails);
         document.getElementsByClassName('drawer-button')[i].param = document.getElementsByClassName('drawer-button')[i].id;
+        document.getElementsByClassName('checkbox')[i].addEventListener('change', checkSelectedPlaces);
+    }
+}
+
+let selected_places=[];
+function checkSelectedPlaces(){
+    if(this.checked){
+        selected_places.push(this.id)
+        document.getElementById('export-btn').style.visibility = "visible";
     }
     
+    else{
+        const index = selected_places.indexOf(this.id);
+        if (index > -1) // only splice array when item is found
+         selected_places.splice(index, 1); // 2nd parameter means remove one item only
+        if(selected_places.length==0)
+         document.getElementById('export-btn').style.visibility = "hidden";
+    }
+    console.log(selected_places);
+}
+
+function click_export_button(){
+    if(selected_places.length==0){
+        
+    }
 }
 
 function fetchPlaceDetails(place_id){
