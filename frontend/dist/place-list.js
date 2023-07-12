@@ -116,13 +116,35 @@ function checkSelectedPlaces(){
     }
     console.log(selected_places);
 }
-
-function click_export_button(){
-    if(selected_places.length==0){
-        
+document.getElementById('export-btn').addEventListener('click',click_export_button);
+async function click_export_button(){
+    console.log("Export ediliyor...");
+    var base_url = "http://localhost:8080/get/place_detail?place_id="
+    var csv = "Mekan adı, Puan, Değerlendirme Sayısı, Telefon, Adres\n"
+    for(var place_id of selected_places){
+        var url = base_url +place_id.substring(1);
+        console.log(`url: ${url}`);
+        await sendRequest(url, 'GET')
+        .then(data => {
+            var address = data.formatted_address.replaceAll(",","");
+            csv += `${data.name}, ${data.rating}, ${data.user_ratings_total}, ${data.international_phone_number}, ${address}\n`;
+        })
+        .catch(err => {
+            console.error(`Error: ${err}`);
+        })
     }
-}
+    downloadCSV(csv);
 
+}
+function downloadCSV(csv){
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    
+    //provide the name for the CSV file to be downloaded
+    hiddenElement.download = 'Seçilen Mekanlar.csv';
+    hiddenElement.click();
+}
 function fetchPlaceDetails(place_id){
 
     let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
