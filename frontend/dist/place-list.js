@@ -1,7 +1,7 @@
 import { sendRequest } from "../send-request.js";
 import { place_types } from "./place-types.js";
 import { getLocationId } from "./autocomplete.js";
-import { getMarkedPlaceId } from "./geocoding.js";
+import { getMarkedPlaceId,placeMarkerFromMap } from "./geocoding.js";
 
 let places;
 function clickRequest(){
@@ -14,6 +14,7 @@ function clickRequest(){
     sendRequest(URL, 'GET')
         .then(data => {   
             places = data;
+            createMarker(places.results);
             createPageButtons(places.results,7);
         })
         .catch(err => {
@@ -25,6 +26,13 @@ function clickRequest(){
 
 document.getElementById('button-search-button').addEventListener('click', clickRequest);
 document.getElementById('export-btn').style.visibility = "hidden";
+
+function createMarker(places_array){
+    for(let place of places_array){
+        placeMarkerFromMap(place.name,place.location);
+        console.log(place)
+    }
+}
 
 function loadingAnimation(){
     document.querySelector("#data-output").innerHTML="";
