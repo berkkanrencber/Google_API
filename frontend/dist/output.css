@@ -3861,10 +3861,6 @@ html {
   width: 2.5rem;
 }
 
-.w-2\/4 {
-  width: 50%;
-}
-
 .w-4 {
   width: 1rem;
 }
@@ -4084,11 +4080,6 @@ html {
 
 .font-semibold {
   font-weight: 600;
-}
-
-.text-base-content {
-  --tw-text-opacity: 1;
-  color: hsl(var(--bc) / var(--tw-text-opacity));
 }
 
 .text-gray-500 {
