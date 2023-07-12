@@ -60,6 +60,7 @@ app.get('/get/nearby_search', async (req,res) => {
     var type = req.query.type;
     var radius = req.query.radius;
     var rating = req.query.rating;
+    var user_ratings_total= req.query.user_ratings_total;
     var responseData = new ResponseNearbySearchModel({results:[]});
     var url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&language=tr&reviews_no_translations =false&key=${process.env.API_KEY}`
     
@@ -68,7 +69,7 @@ app.get('/get/nearby_search', async (req,res) => {
         var lat = data.result.geometry.location.lat
         var lng = data.result.geometry.location.lng
         responseData.results = await getAllPlaces(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${process.env.API_KEY}`);
-        responseData.results = checkProperty(responseData.results, rating, 0);
+        responseData.results = checkProperty(responseData.results, rating, user_ratings_total);
         res.json(responseData);
     })
     .catch(err => {

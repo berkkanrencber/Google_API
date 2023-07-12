@@ -11,14 +11,11 @@ function onChangeLocation(){
 
   sendRequest(URL, 'GET')
         .then(data => {   
-            console.log(JSON.stringify(data.predictions));
             displayResults(data.predictions);
         })
         .catch(err => {
             console.error(err)
         })
-
-  console.log(location);
 }
 
 function displayResults(result) {
@@ -42,13 +39,11 @@ function displayResults(result) {
 }
 
 function selectInput(list) {
-  console.log(list);
   inputBox.value = list;
   resultBox.innerHTML = '';
 }
 
 function setSelectedLocationId(id){
-  console.log(id);
   selectedLocationId = id;
 }
 
