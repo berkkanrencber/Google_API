@@ -46,7 +46,7 @@
 
                             </div>
 
-                            <div class="form-control max-w-xs" id="rating-input">
+                            <div class="form-control max-w-xs lg:mr-5" id="rating-input">
                                 <label class="label">
                                     <span class="label-text">Rating</span>
                                     <input type="checkbox" class="toggle" unchecked id="rating-toggle" />
@@ -55,10 +55,10 @@
                                     id="rating-input-text" />
                             </div>
 
-                            <div class="form-control max-w-xs mx-4" id="total-rating-input">
+                            <div class="form-control max-w-xs" id="total-rating-input">
                                 <label class="label">
                                     <span class="label-text">Total Vote</span>
-                                    <input type="checkbox" class="toggle" unchecked id="rating-toggle" />
+                                    <input type="checkbox" class="toggle" unchecked id="total-rating-toggle" />
                                 </label>
                                 <input type="text" class="input input-group-xs input-bordered w-full max-w-xs"
                                     id="total-rating-input-text" />
@@ -81,12 +81,11 @@
                 <div class="flex-grow card bg-base-300 rounded-box place-items-center" id="list">
                     <div class="overflow-x-auto w-full">
                         <table class="table w-full">
-                            
                             <thead>
                                 <tr>
                                     <th>
                                         <label>
-                                            <input type="checkbox" class="checkbox" />
+                                            <input type="checkbox" class="checkbox" id="top-check-box"  />
                                         </label>
                                     </th>
                                     <th class="text-center">Name</th>
@@ -98,17 +97,12 @@
                             </thead>
                             <tbody id="data-output">
                             </tbody>
-                            
                         </table>
 
-                        
                         <div class="join" id="paging-buttons" >  <!-- pagination buttons -->
-                            
                         </div>
-                          
                     </div>
                 </div>
-                
             </div>
 
             <script src="frontend.js"></script>
@@ -125,11 +119,7 @@
         <!-- Place Detail Side -->
         <div class="drawer-side">
             <label for="my-drawer-4" class="drawer-overlay"></label>
-            <!-- <ul class="menu p-4 w-2/4 bg-base-100 text-base-content">
-                <li><a>Sidebar Item 1</a></li>
-                <li><a>Sidebar Item 2</a></li>
-            </ul> -->
-            
+          
             <div class="card lg:w-2/5 bg-base-100 shadow-xl p-5 w-full">
 
                 <article class="md:gap-8 md:grid md:grid-cols-3">
@@ -214,7 +204,6 @@
 
                 </article>
             </div>
-            <script type="module" src="place-detail.js"></script>
         </div>
     </div>
 </body>

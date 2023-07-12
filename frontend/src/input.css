@@ -6,3 +6,7 @@
     text-align: center;
     margin-top: 1rem;
 }
+
+#top-check-box{
+    visibility: hidden;
+  }

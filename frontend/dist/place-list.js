@@ -5,23 +5,27 @@ import { getMarkedPlaceId,placeMarkerFromMap } from "./geocoding.js";
 
 let places;
 function clickRequest(){
+  if(document.getElementById('autocomplete').value!=""){
+
     var typeValue=document.getElementById('input-type');
     var radiusValue=document.getElementById('radius-input-text').value;
     var ratingValue=document.getElementById('rating-input-text').value;
     var place_id = getLocationId() ? getLocationId() : getMarkedPlaceId();
-    let URL = `http://localhost:8080/get/nearby_search?place_id=${place_id}&radius=${radiusValue}&type=${place_types[typeValue.selectedIndex]}&rating=${ratingValue}`
+    var totalValue=document.getElementById('total-rating-input-text').value;
+    let URL = `http://localhost:8080/get/nearby_search?place_id=${place_id}&radius=${radiusValue}&type=${place_types[typeValue.selectedIndex]}&rating=${ratingValue}&user_ratings_total=${totalValue}`
 
     sendRequest(URL, 'GET')
         .then(data => {   
             places = data;
             createMarker(places.results);
-            createPageButtons(places.results,7);
+            createPageButtons(places.results,8);
         })
         .catch(err => {
             console.error(err)
         })
-    console.log('click')
+
     loadingAnimation();
+  }
 }
 
 document.getElementById('button-search-button').addEventListener('click', clickRequest);
@@ -30,7 +34,6 @@ document.getElementById('export-btn').style.visibility = "hidden";
 function createMarker(places_array){
     for(let place of places_array){
         placeMarkerFromMap(place.name,place.location);
-        console.log(place)
     }
 }
 
@@ -39,7 +42,7 @@ function loadingAnimation(){
     let loading = document.querySelector("#paging-buttons");
     loading.innerHTML="";
     let i;
-    for(i=0; i<7; i++)
+    for(i=0; i<8; i++)
     loading.innerHTML += `<div class="border-b-2 border-gray-600 shadow m-4 p-4 max-w-xxl w-full mx-auto">
   <div class="animate-pulse  flex space-x-4">
     <div class=" bg-slate-700 h-7 w-7"></div>
@@ -62,7 +65,6 @@ function getPlacesWithPage(places_array,page,limit){
 
     let results = [];
     results= places_array.slice(startIndex,endIndex);
-    console.log(results);
 
     //to list all wished places
     let placeholder = document.querySelector("#data-output");
@@ -114,16 +116,13 @@ function checkSelectedPlaces(){
         if(selected_places.length==0)
          document.getElementById('export-btn').style.visibility = "hidden";
     }
-    console.log(selected_places);
 }
 document.getElementById('export-btn').addEventListener('click',click_export_button);
 async function click_export_button(){
-    console.log("Export ediliyor...");
     var base_url = "http://localhost:8080/get/place_detail?place_id="
     var csv = "Mekan adı, Puan, Değerlendirme Sayısı, Telefon, Adres\n"
     for(var place_id of selected_places){
         var url = base_url +place_id.substring(1);
-        console.log(`url: ${url}`);
         await sendRequest(url, 'GET')
         .then(data => {
             var address = data.formatted_address.replaceAll(",","");
@@ -179,8 +178,7 @@ function createPageButtons(places_array,limit){
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             let page = parseInt(button.innerText);
-            console.log(button.innerText);
-            getPlacesWithPage(places.results,page, 7);
+            getPlacesWithPage(places.results,page, 8);
         })
     })
 }
@@ -251,7 +249,6 @@ function fetchDetails(place_details_array){
         </div>
         `
         place_review.innerHTML=out;
-        console.log(`star-${review.rating}-${index}`);
         index++;
     }
 

@@ -25,7 +25,6 @@ function initMap() {
       selectedLat = mapsMouseEvent.latLng.toJSON().lat;
       selectedLng = mapsMouseEvent.latLng.toJSON().lng;
       
-      console.log(mapsMouseEvent.latLng.toJSON().lat + " " + mapsMouseEvent.latLng.toJSON().lng);
       let url = `http://localhost:8080/get/place?lat=${selectedLat}&lng=${selectedLng}`
       sendRequest(url,'GET')
       .then(data => {
@@ -77,6 +76,7 @@ function placeMarkerFromMap(place_name,position){
           map,
         })
   });
+  
 }
 
 
