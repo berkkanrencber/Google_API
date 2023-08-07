@@ -220,7 +220,13 @@ const place_type = document.getElementById('place-types');
 const place_review = document.getElementById('place-reviews');
 
 function fetchDetails(place_details_array){
-
+    place_name.innerHTML="";
+    place_rating.innerHTML="";
+    place_address.innerHTML ="";
+    place_phone.innerHTML ="";
+    place_user_total_rating.innerHTML ="";
+    place_url.innerHTML = "";
+    place_url.href ="";
     let reviews = [];
     reviews = place_details_array.reviews; 
 

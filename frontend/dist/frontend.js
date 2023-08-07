@@ -1,17 +1,23 @@
 const radiusToggle=document.querySelector("#radius-toggle");
 const radiusInput=document.querySelector('#radius-input-text');
-const ratingToggle=document.querySelector("#rating-toggle");
 const ratingInput=document.querySelector('#rating-input-text');
-const totalToggle=document.querySelector("#total-rating-toggle");
+const ratingInputValue=document.querySelector('#rating-input-text-value');
 const totalInput=document.querySelector('#total-rating-input-text');
+const totalInputValue=document.querySelector('#total-rating-input-text-value');
 const get = document.getElementById('radius-input-text');
 
+ratingInputValue.textContent=ratingInput.value;
+ratingInput.addEventListener("input", (event)=> {
+    ratingInputValue.textContent=event.target.value;
+})
 
+totalInputValue.textContent=totalInput.value;
+totalInput.addEventListener("input", (event)=> {
+    totalInputValue.textContent=event.target.value;
+})
 
 
 radiusInput.disabled=true
-ratingInput.disabled=true
-totalInput.disabled=true
 radiusInput.placeholder="500"
 ratingInput.placeholder="0"
 totalInput.placeholder="0"
@@ -33,31 +39,3 @@ radiusToggle.addEventListener('change',function(){
         radiusInput.value=""
     }
 })
-
-ratingToggle.addEventListener('change',function(){
-    if(!ratingToggle.checked){
-        ratingInput.disabled=true
-        ratingInput.placeholder="0"
-        ratingInput.value="0"
-    }
-    else{
-        ratingInput.disabled=false
-        ratingInput.placeholder="Enter rating (0-5)"
-        ratingInput.value=""
-    }
-})
-
-totalToggle.addEventListener('change',function(){
-    if(!totalToggle.checked){
-        totalInput.disabled=true
-        totalInput.placeholder="0"
-        totalInput.value="0"
-    }
-    else{
-        totalInput.disabled=false
-        totalInput.placeholder="Enter min vote number"
-        totalInput.value=""
-
-    }
-})
-

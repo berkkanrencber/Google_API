@@ -47,25 +47,28 @@
                                     id="radius-input-text" />
 
                             </div>
-
                             <div class="form-control max-w-xs lg:mr-5" id="rating-input">
                                 <label class="label">
-                                    <span class="label-text">Rating</span>
-                                    <input type="checkbox" class="toggle" unchecked id="rating-toggle" />
+                                    <span class="label-text">Rating </span>
+                                    <span><output id="rating-input-text-value">0</output></span>
+                                    <!-- <input type="checkbox" class="toggle" unchecked id="rating-toggle" /> -->
                                 </label>
-                                <input type="text" class="input input-group-xs input-bordered w-full max-w-xs"
-                                    id="rating-input-text" />
+                                <input type="range" value="0" min="0" max="5" step="0.1"
+                                    class="range self-center align-middle" id="rating-input-text">
+                                <!-- <input type="text" class="input input-group-xs input-bordered w-full max-w-xs"
+                                    id="rating-input-text" /> -->
                             </div>
-
                             <div class="form-control max-w-xs" id="total-rating-input">
                                 <label class="label">
                                     <span class="label-text">Total Vote</span>
-                                    <input type="checkbox" class="toggle" unchecked id="total-rating-toggle" />
+                                    <span><output id="total-rating-input-text-value">0</output></span>
+                                    <!-- <input type="checkbox" class="toggle" unchecked id="total-rating-toggle" /> -->
                                 </label>
-                                <input type="text" class="input input-group-xs input-bordered w-full max-w-xs"
-                                    id="total-rating-input-text" />
+                                <input type="range" value="0" min="0" max="1000" step="50"
+                                    class="range self-center align-middle" id="total-rating-input-text">
+                                <!-- <input type="text" class="input input-group-xs input-bordered w-full max-w-xs"
+                                    id="total-rating-input-text" /> -->
                             </div>
-
                         </div>
                         <br>
                         <div id="search-button">
@@ -87,9 +90,10 @@
                                 <tr>
                                     <th>
                                         <label class="cursor-text label">
-                                            <input type="checkbox"  class="checkbox checkbox-accent" id="select-all-check" />
+                                            <input type="checkbox" class="checkbox checkbox-accent"
+                                                id="select-all-check" />
                                             <span class="label-text">Select all</span>
-                                            
+
                                         </label>
                                     </th>
                                     <th class="text-center">Name</th>
