@@ -1,5 +1,7 @@
 import { sendRequest } from "../send-request.js";
+import { setCenterOfMap } from "./geocoding.js";
 
+let selectedLocationLatLng = {};
 let selectedLocationId;
 let resultBox = document.getElementById('result-box');
 let inputBox = document.getElementById('autocomplete');
@@ -27,8 +29,19 @@ function displayResults(result) {
         const aTag = document.createElement('a');
         aTag.textContent = result[i].description;
         aTag.onclick = () => {
+          console.log(result[i])
           selectInput(result[i].description);
           setSelectedLocationId(result[i].place_id);
+          let URL = `http://localhost:8080/get/location?place_id=${result[i].place_id}`
+          sendRequest(URL, 'GET')
+            .then(data => {
+              selectedLocationLatLng.lat = data.lat;
+              selectedLocationLatLng.lng = data.lng;
+              setCenterOfMap(selectedLocationLatLng,12)
+            })
+            .catch(err => {
+              console.error(err)
+            })
         }
         li.appendChild(aTag);
         ul.appendChild(li);
@@ -49,4 +62,8 @@ function setSelectedLocationId(id){
 
 export function getLocationId(){
   return selectedLocationId;
+}
+
+export function getLocationLatLng(){
+  return selectedLocationLatLng;
 }

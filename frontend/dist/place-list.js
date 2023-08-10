@@ -1,7 +1,7 @@
 import { sendRequest } from "../send-request.js";
 import { place_types } from "./place-types.js";
-import { getLocationId } from "./autocomplete.js";
-import { getMarkedPlaceId,placeMarkerFromMap } from "./geocoding.js";
+import { getLocationId,getLocationLatLng } from "./autocomplete.js";
+import { getMarkedPlaceId,placeMarkerFromMap,deleteMarkers,setCenterOfMap,setCenterOfMapClick } from "./geocoding.js";
 
 let places;
 function clickRequest(){
@@ -17,6 +17,13 @@ function clickRequest(){
     sendRequest(URL, 'GET')
         .then(data => {   
             places = data;
+            console.log(getLocationLatLng())
+            if(Object.keys(getLocationLatLng()).length>0){
+                setCenterOfMap(getLocationLatLng(),(16-(radiusValue/500)));
+            }else{
+                setCenterOfMapClick(16-(radiusValue/500));
+            }
+            deleteMarkers();
             createMarker(places.results);
             createPageButtons(places.results,8);
         })
@@ -144,10 +151,20 @@ function downloadCSV(csv){
     hiddenElement.download = 'Seçilen Mekanlar.csv';
     hiddenElement.click();
 }
+
+
 function fetchPlaceDetails(place_id){
+    
+    place_name.innerHTML="";
+    place_rating.innerHTML="";
+    place_address.innerHTML ="";
+    place_phone.innerHTML ="";
+    place_user_total_rating.innerHTML ="";
+    place_url.innerHTML = "";
+    place_url.href ="";
 
     let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
-
+    console.log("girdi")
     sendRequest(URL, 'GET')
         .then(data => {   
             fetchDetails(data);
@@ -255,4 +272,5 @@ function fetchDetails(place_details_array){
     for(let i=0; i<reviews.length; i++){
         document.getElementById(`star-${reviews[i].rating}-${i}`).checked=true;
     }
+    
 }

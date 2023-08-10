@@ -4,10 +4,12 @@ import { sendRequest } from "../send-request.js";
 let selectedLat;
 let selectedLng;
 let selectedPlaceId;
+let selectedLatLng={};
 let marker;
 let infoWindow;
 let placeInfoWindow;
 let map;
+let markers=[];
 
 
 function initMap() {
@@ -24,6 +26,8 @@ function initMap() {
       }
       selectedLat = mapsMouseEvent.latLng.toJSON().lat;
       selectedLng = mapsMouseEvent.latLng.toJSON().lng;
+      selectedLatLng.lat=selectedLat;
+      selectedLatLng.lng=selectedLng;
       
       let url = `http://localhost:8080/get/place?lat=${selectedLat}&lng=${selectedLng}`
       sendRequest(url,'GET')
@@ -49,6 +53,21 @@ function initMap() {
     });
 }
 
+function setCenterOfMap(position,zoom){
+  console.log("setCenterOfMap")
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: zoom,
+    center: position,
+  });
+}
+
+function setCenterOfMapClick(zoom){
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: zoom,
+    center: selectedLatLng
+  });
+}
+
 function getMarkedPlaceId(){
   return selectedPlaceId;
 }
@@ -61,28 +80,53 @@ function placeMarker(position){
 }
 
 function placeMarkerFromMap(place_name,position){
+  infoWindow = new google.maps.InfoWindow({
+    content: place_name
+  });
   marker = new google.maps.Marker({
     position: position, 
     map,
   });
+  markers.push(marker);
   marker.addListener("click", () => {
         marker.title = place_name;
         marker.setPosition(position);
-        infoWindow.close();
-        infoWindow.setContent(marker.title);
-        infoWindow.setPosition(marker.position);
-        infoWindow.open({
-          anchor: marker,
-          map,
-        })
+        if(infoWindow){
+          infoWindow.close();
+          infoWindow.setContent(marker.title);
+          infoWindow.setPosition(marker.position);
+          infoWindow.open({
+            anchor: marker,
+            map,
+          })
+        }
+        
   });
   
+}
+
+function setMapOnAll(map) {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+function hideMarkers() {
+  setMapOnAll(null);
+}
+
+function deleteMarkers(){
+  hideMarkers();
+  markers=[];
 }
 
 
 export {
   getMarkedPlaceId,
   placeMarkerFromMap,
+  deleteMarkers,
+  setCenterOfMap,
+  setCenterOfMapClick
 };
 
 window.initMap = initMap;
