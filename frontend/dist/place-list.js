@@ -162,7 +162,8 @@ function fetchPlaceDetails(place_id){
     place_user_total_rating.innerHTML ="";
     place_url.innerHTML = "";
     place_url.href ="";
-
+    place_review.innerHTML="";
+    
     let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
     console.log("girdi")
     sendRequest(URL, 'GET')
