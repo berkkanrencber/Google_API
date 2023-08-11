@@ -17,7 +17,6 @@ function clickRequest(){
     sendRequest(URL, 'GET')
         .then(data => {   
             places = data;
-            console.log(getLocationLatLng())
             if(Object.keys(getLocationLatLng()).length>0){
                 setCenterOfMap(getLocationLatLng(),(16-(radiusValue/500)));
             }else{
@@ -166,7 +165,7 @@ function fetchPlaceDetails(place_id){
     place_review.innerHTML="";
     
     let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
-    console.log("girdi")
+    
     sendRequest(URL, 'GET')
         .then(data => {   
             fetchDetails(data);

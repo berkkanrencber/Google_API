@@ -82,7 +82,6 @@ function placeMarker(position){
 }
 
 function placeMarkerFromMap(place_name,position,place_address,place_user_total_rating,int){
-  console.log("placeMarkerFromMap girdi, place_name: "+place_name+" position: "+position)
   let html=`<div id="content"><div id="siteNotice"></div>
   <h1 id="firstHeading" class="firstHeading"><strong>${place_name}</strong></h1><div id="bodyContent">
   <p>${place_address}</p><p>User Total Rating: ${place_user_total_rating}</p></div></div>`
@@ -95,8 +94,6 @@ function placeMarkerFromMap(place_name,position,place_address,place_user_total_r
   });
   markers.push(marker);
   marker.addListener("click", () => {
-        console.log("placemarkerfrommap")
-        console.log(markers)
         marker.title = place_name;
         marker.setPosition(position);
         if(infoWindow && int!=1){

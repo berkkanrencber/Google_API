@@ -74,7 +74,6 @@ function displayResults(result) {
         aTag.onclick = () => {
           clikedOneOfResult=true;
           searchProcess=false;
-          console.log(result[i])
           selectInput(result[i].description);
           setSelectedLocationId(result[i].place_id);
           let URL = `http://localhost:8080/get/location?place_id=${result[i].place_id}`
