@@ -5,7 +5,50 @@ let selectedLocationLatLng = {};
 let selectedLocationId;
 let resultBox = document.getElementById('result-box');
 let inputBox = document.getElementById('autocomplete');
-inputBox.addEventListener('input', onChangeLocation);
+//inputBox.addEventListener('input', onChangeLocation);
+inputBox.addEventListener('blur',()=>{ setTimeout(() => { resultBox.innerHTML="" }, 200); });
+inputBox.addEventListener('click', searchLocations );
+inputBox.addEventListener('focus', ()=>{ 
+  if(inputBox.value!="")
+    resultBox.innerHTML=resultBoxHtml 
+});
+let resultBoxHtml="";
+let tempLocation="";
+let searchProcess=true;
+let clikedOneOfResult=false;
+let firstClick=false;
+
+function searchLocations(){
+  if(!firstClick){
+    firstClick=true;
+    clikedOneOfResult=false;
+    searchProcess=true;
+    var location = document.getElementById('autocomplete').value;
+    let URL = "http://localhost:8080/get/autocomplete?input=" + location;
+    tempLocation=location;
+    setInterval(() => {
+      location = document.getElementById('autocomplete').value;
+      URL = "http://localhost:8080/get/autocomplete?input=" + location;
+      if(!clikedOneOfResult){
+        if(location!="" && location.length%2==0 && location.length!=0 && searchProcess==true){
+          sendRequest(URL, 'GET')
+          .then(data => {   
+              displayResults(data.predictions);
+              searchProcess=false;
+          })
+          .catch(err => {
+              console.error(err)
+          })
+        }else if(location!=tempLocation){
+          searchProcess=true;
+        }
+      }
+      
+      tempLocation=location;
+    }, 1000);
+  }
+  
+}
 
 function onChangeLocation(){
   var location = document.getElementById('autocomplete').value;
@@ -29,6 +72,8 @@ function displayResults(result) {
         const aTag = document.createElement('a');
         aTag.textContent = result[i].description;
         aTag.onclick = () => {
+          clikedOneOfResult=true;
+          searchProcess=false;
           console.log(result[i])
           selectInput(result[i].description);
           setSelectedLocationId(result[i].place_id);
@@ -49,6 +94,7 @@ function displayResults(result) {
 
     resultBox.innerHTML = '';
     resultBox.appendChild(ul);
+    resultBoxHtml=resultBox.innerHTML;
 }
 
 function selectInput(list) {
