@@ -30,7 +30,7 @@ function searchLocations(){
       location = document.getElementById('autocomplete').value;
       URL = "http://localhost:8080/get/autocomplete?input=" + location;
       if(!clikedOneOfResult){
-        if(location!="" && location.length%2==0 && location.length!=0 && searchProcess==true){
+        if(location!="" && location.length!=0 && searchProcess==true){
           sendRequest(URL, 'GET')
           .then(data => {   
               displayResults(data.predictions);
