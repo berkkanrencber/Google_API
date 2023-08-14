@@ -8,8 +8,9 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script type="module" src="frontend.js"></script>
     <link rel="stylesheet" href="output.css">
-    
+
 </head>
+
 <body>
 
     <div class="drawer drawer-end">
@@ -47,7 +48,9 @@
                                     <input type="checkbox" class="toggle" unchecked id="radius-toggle" />
                                 </label>
 
-                                <input type="text" class="input input-group-md lg:input-group-xs input-bordered w-full mb-2" id="radius-input-text" />
+                                <input type="text"
+                                    class="input input-group-md lg:input-group-xs input-bordered w-full mb-2"
+                                    id="radius-input-text" />
 
                             </div>
 
@@ -59,7 +62,8 @@
                                     <!-- <input type="checkbox" class="toggle" unchecked id="rating-toggle" /> -->
                                 </label>
 
-                                <input type="range" value="0" min="0" max="5" step="0.1" class="range self-center align-middle" id="rating-input-text">
+                                <input type="range" value="0" min="0" max="5" step="0.1"
+                                    class="range self-center align-middle" id="rating-input-text">
                                 <!-- <input type="text" class="input input-group-xs input-bordered w-full max-w-xs"
                                     id="rating-input-text" /> -->
                             </div>
@@ -71,7 +75,8 @@
                                     <!-- <input type="checkbox" class="toggle" unchecked id="total-rating-toggle" /> -->
                                 </label>
 
-                                <input type="range" value="0" min="0" max="1000" step="50" class="range self-center align-middle" id="total-rating-input-text">
+                                <input type="range" value="0" min="0" max="1000" step="50"
+                                    class="range self-center align-middle" id="total-rating-input-text">
 
                                 <!-- <input type="text" class="input input-group-xs input-bordered w-full max-w-xs"
                                     id="total-rating-input-text" /> -->
@@ -98,18 +103,24 @@
                                     <th>
                                         <label class="cursor-text label">
                                             <input type="checkbox" class="checkbox checkbox-accent"
-                                                id="select-all-check" />
-                                            <span class="label-text">Select all</span>
+                                                id="select-all-check" disabled/>
 
                                         </label>
                                     </th>
 
-                                    <th class="text-center"><button class="btn-primary textarea-success" id="lbl-name">Name</button></th>
-                                    <th class="text-center"><button class="btn-primary" id="lbl-rating">Rating </button></th>
-                                    <th class="text-center"><button class="btn-primary" id="lbl-vote">User Total Rating</button></th>
-                                    <th class="text-center"><button class="btn btn-square btn-active btn-accent" id="export-btn"><svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="25" height="25"><path d="M17.8,21.21c.42,.72,.17,1.63-.55,2.05-.83,.48-1.78,.74-2.75,.74H5.5c-3.03,0-5.5-2.47-5.5-5.5V5.5C0,2.47,2.47,0,5.5,0h6.34c1.45,0,2.87,.59,3.89,1.61l2.66,2.66c.82,.82,1.35,1.85,1.54,2.99,.14,.82-.42,1.61-1.23,1.75-.06,.01-5.69,0-5.69,0-1.1,0-2-.9-2-2V3H5.5c-1.38,0-2.5,1.12-2.5,2.5v13c0,1.38,1.12,2.5,2.5,2.5H14.5c.44,0,.87-.12,1.25-.33,.71-.41,1.63-.17,2.05,.55Zm5.91-6.42l-3-3.16c-.63-.63-1.71-.18-1.71,.71v1.66h-5.5c-.83,0-1.5,.67-1.5,1.5s.67,1.5,1.5,1.5h5.5v1.66c0,.89,1.08,1.34,1.71,.71l3-3.16c.39-.39,.39-1.02,0-1.41Z"/></svg></button></th>
+                                    <th class="text-center"><button
+                                            class="btn-primary bg-transparent hover:text-purple-600 hover:bg-transparent"
+                                            id="lbl-name">Name</button></th>
+                                    <th class="text-center"><button
+                                            class="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
+                                            id="lbl-rating">Rating </button></th>
+                                    <th class="text-center"><button
+                                            class="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
+                                            id="lbl-vote">User Total Rating</button></th>
+                                    <th class="text-center"><button class="btn btn-square btn-active btn-accent"
+                                            id="export-btn"><img class="w-4/5 h-4/5" src="../images/file.png"></button>
+                                    </th>
 
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody id="data-output">
@@ -118,7 +129,7 @@
 
 
 
-                        <div class="join max-h-fit" id="paging-buttons" >  <!-- pagination buttons -->
+                        <div class="join max-h-fit" id="paging-buttons"> <!-- pagination buttons -->
 
                         </div>
                     </div>
@@ -132,8 +143,7 @@
 
             <script
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNe8wTSIdnOBEKezvI0m9mZgSZ5qEsUUo&callback=initMap&v=weekly"
-                    defer
-            ></script>
+                defer></script>
 
         </div>
 
@@ -141,8 +151,8 @@
         <div class="drawer-side">
             <label for="my-drawer-4" class="drawer-overlay"></label>
 
-            
-          
+
+
             <div class="card lg:w-2/5 bg-base-100 shadow-xl p-5 w-full" id="card-sidebar">
                 <!-- <div class="flex justify-center mt-96" id="progress">
                     <progress class="progress progress-primary w-56"></progress>

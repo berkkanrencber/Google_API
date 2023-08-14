@@ -19,7 +19,6 @@ function clickRequest() {
         sendRequest(URL, 'GET')
             .then(data => {
                 places = data;
-                console.log(getLocationLatLng())
                 if (Object.keys(getLocationLatLng()).length > 0) {
                     setCenterOfMap(getLocationLatLng(), (16 - (radiusValue / 500)));
                 } else {
@@ -28,8 +27,6 @@ function clickRequest() {
                 deleteMarkers();
                 createMarker(places.results);
                 places.results = sortElement(places.results, 'name');
-                document.getElementById('lbl-name').className="btn-primary text-white";
-
 
                 createPageButtons(places.results, 8);
             })
@@ -38,34 +35,37 @@ function clickRequest() {
             })
 
         loadingAnimation();
+        var element = document.querySelector("#paging-buttons");
+        element.scrollIntoView();   
         document.getElementById('lbl-name').addEventListener('click', function() {
             places.results = sortElement(places.results.slice(), 'name'); 
             createPageButtons(places.results, 8);
-            document.getElementById('lbl-name').className="btn-primary text-white";
-            document.getElementById('lbl-rating').className="btn-primary"
-            document.getElementById('lbl-vote').className="btn-primary"
+            document.getElementById('lbl-name').className="btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent";
+            document.getElementById('lbl-rating').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
+            document.getElementById('lbl-vote').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
         });
         document.getElementById('lbl-rating').addEventListener('click', function() {
             places.results = sortElement(places.results.slice(), 'rating'); 
             createPageButtons(places.results, 8);
-            document.getElementById('lbl-name').className="btn-primary";
-            document.getElementById('lbl-rating').className="btn-primary text-white"
-            document.getElementById('lbl-vote').className="btn-primary"
+            document.getElementById('lbl-name').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent";
+            document.getElementById('lbl-rating').className="btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent"
+            document.getElementById('lbl-vote').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
             
         });
         document.getElementById('lbl-vote').addEventListener('click', function() {
             places.results = sortElement(places.results.slice(), 'vote'); 
             createPageButtons(places.results, 8);
-            document.getElementById('lbl-name').className="btn-primary";
-            document.getElementById('lbl-rating').className="btn-primary"
-            document.getElementById('lbl-vote').className="btn-primary text-white"
+            document.getElementById('lbl-name').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent";
+            document.getElementById('lbl-rating').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
+            document.getElementById('lbl-vote').className="btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent"
         });
 
     }
 
+    selected_places=[];
+    document.getElementById('export-btn').disabled= true;
 
 }
-let places_array;
 document.getElementById('button-search-button').addEventListener('click', clickRequest);
 document.getElementById('export-btn').disabled= true;
 
@@ -102,6 +102,7 @@ function loadingAnimation() {
 
 let currentPage=1
 function getPlacesWithPage(places_array,page,limit){
+
     const startIndex= (page-1)*limit;
     const endIndex= page*limit;
 
@@ -115,17 +116,16 @@ function getPlacesWithPage(places_array,page,limit){
     let out = "";
     for (let place of results) {
         out += `
-                <tr>
+                <tr class="">
                     <th>
                         <label>
                             <input type="checkbox" class="checkbox" id="c${place.place_id}" ${selected_places.includes(`c${place.place_id}`) ? 'checked' : ''}/>
                         </label>
                     </th>
                     <td class="text-center">
-                        <div class="overflow-hidden">
-                            <div>
-                                <div class="font-bold w-48 overflow-hidden">${place.name}</div>
-                            </div>
+                        <div class="overflow-hidden flex justify-center">
+                                <div class="font-boldw-60 overflow-hidden">${place.name}</div>
+                            
                         </div>
                     </td>
                     <td class="text-center">
@@ -144,16 +144,15 @@ function getPlacesWithPage(places_array,page,limit){
         document.getElementsByClassName('drawer-button')[i].param = document.getElementsByClassName('drawer-button')[i].id;
         document.getElementsByClassName('checkbox')[i].addEventListener('change', checkSelectedPlaces);
     }
-
+    document.getElementById('select-all-check').disabled=false;
 }
 
 let selected_places = [];
 function checkSelectedPlaces() {
     if (this.checked) {
         selected_places.push(this.id)
-        console.log(this.id);
         document.getElementById('export-btn').disabled= false;
-        if(selected_places.length==places_array.length){    //if all elements are selected, 
+        if(selected_places.length==places.results.length){    //if all elements are selected, 
             document.getElementById('select-all-check').checked=true;   //make checked select all's checkbox
         }
     }
@@ -170,8 +169,8 @@ function checkSelectedPlaces() {
 
     if(document.getElementById('select-all-check').checked){
         selected_places=[];
-        for(let i=0; i<places_array.length; i++){
-            selected_places.push('c'+places_array[i].place_id);
+        for(let i=0; i<places.results.length; i++){
+            selected_places.push('c'+places.results[i].place_id);
         }
 
     }
@@ -180,7 +179,7 @@ function checkSelectedPlaces() {
 
 }
 document.getElementById('export-btn').addEventListener('click', click_export_button);
-async function click_export_button()
+async function click_export_button(){
     var base_url = "http://localhost:8080/get/place_detail?place_id="
     var csv = "Mekan adı, Puan, Değerlendirme Sayısı, Telefon, Adres\n"
     for (var place_id of selected_places) {
@@ -242,7 +241,6 @@ function fetchPlaceDetails(place_id) {
 }
 
 function sortElement(places_array, label) {
-    console.log(label +" için sorta girdi")
     if (label == 'name') {
         places_array.sort((a, b) => { //
             const nameA = a.name.toLowerCase(); // Convert names to uppercase for case-insensitive sorting

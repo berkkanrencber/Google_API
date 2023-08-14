@@ -21,7 +21,6 @@ function initMap() {
 
     // Configure the click listener.
     map.addListener("click", (mapsMouseEvent) => {
-      console.log("initmap listener")
       if(marker != null){
         marker.setMap(null);
       }
@@ -33,7 +32,6 @@ function initMap() {
       let url = `http://localhost:8080/get/place?lat=${selectedLat}&lng=${selectedLng}`
       sendRequest(url,'GET')
       .then(data => {
-        console.log("initmap sendrequest")
         document.getElementById('autocomplete').value = data.result.formatted_address;
         selectedPlaceId = data.result.place_id;
         placeMarker(mapsMouseEvent.latLng);
@@ -43,7 +41,6 @@ function initMap() {
         });
 
         marker.addListener("click", () => {
-          console.log("marker listener")
           infoWindow.open({
             anchor: marker,
             map,
