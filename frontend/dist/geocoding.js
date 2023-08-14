@@ -21,6 +21,7 @@ function initMap() {
 
     // Configure the click listener.
     map.addListener("click", (mapsMouseEvent) => {
+      console.log("initmap listener")
       if(marker != null){
         marker.setMap(null);
       }
@@ -32,6 +33,7 @@ function initMap() {
       let url = `http://localhost:8080/get/place?lat=${selectedLat}&lng=${selectedLng}`
       sendRequest(url,'GET')
       .then(data => {
+        console.log("initmap sendrequest")
         document.getElementById('autocomplete').value = data.result.formatted_address;
         selectedPlaceId = data.result.place_id;
         placeMarker(mapsMouseEvent.latLng);
@@ -41,6 +43,7 @@ function initMap() {
         });
 
         marker.addListener("click", () => {
+          console.log("marker listener")
           infoWindow.open({
             anchor: marker,
             map,
@@ -54,7 +57,6 @@ function initMap() {
 }
 
 function setCenterOfMap(position,zoom){
-  console.log("setCenterOfMap")
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: zoom,
     center: position,
@@ -79,9 +81,12 @@ function placeMarker(position){
   });
 }
 
-function placeMarkerFromMap(place_name,position){
+function placeMarkerFromMap(place_name,position,place_address,place_user_total_rating,int){
+  let html=`<div id="content"><div id="siteNotice"></div>
+  <h1 id="firstHeading" class="firstHeading"><strong>${place_name}</strong></h1><div id="bodyContent">
+  <p>${place_address}</p><p>User Total Rating: ${place_user_total_rating}</p></div></div>`
   infoWindow = new google.maps.InfoWindow({
-    content: place_name
+    content: html
   });
   marker = new google.maps.Marker({
     position: position, 
@@ -91,14 +96,18 @@ function placeMarkerFromMap(place_name,position){
   marker.addListener("click", () => {
         marker.title = place_name;
         marker.setPosition(position);
-        if(infoWindow){
+        if(infoWindow && int!=1){
           infoWindow.close();
-          infoWindow.setContent(marker.title);
+          infoWindow.setContent(html);
           infoWindow.setPosition(marker.position);
           infoWindow.open({
             anchor: marker,
             map,
           })
+        }
+        if(int==1){
+          infoWindow.close();
+          infoWindow.setContent(html);
         }
         
   });

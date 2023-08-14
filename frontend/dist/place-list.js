@@ -15,6 +15,7 @@ function clickRequest() {
         var totalValue = document.getElementById('total-rating-input-text').value;
         let URL = `http://localhost:8080/get/nearby_search?place_id=${place_id}&radius=${radiusValue}&type=${place_types[typeValue.selectedIndex]}&rating=${ratingValue}&user_ratings_total=${totalValue}`
 
+
         sendRequest(URL, 'GET')
             .then(data => {
                 places = data;
@@ -62,16 +63,19 @@ function clickRequest() {
 
     }
 
+
 }
-
+let places_array;
 document.getElementById('button-search-button').addEventListener('click', clickRequest);
-document.getElementById('export-btn').style.visibility = "hidden";
+document.getElementById('export-btn').disabled= true;
 
 
-function createMarker(places_array) {
-    for (let place of places_array) {
-        placeMarkerFromMap(place.name, place.location);
+function createMarker(places_array){
+    for(let place of places_array){
+        placeMarkerFromMap(place.name,place.location,place.formatted_address,place.user_ratings_total,0);
+
     }
+    placeMarkerFromMap(places_array[places_array.length-1].name,places_array[places_array.length-1].location,places_array[places_array.length-1].formatted_address,places_array[places_array.length-1].user_ratings_total,1);
 }
 
 function loadingAnimation() {
@@ -96,9 +100,11 @@ function loadingAnimation() {
 </div>`
 }
 
-function getPlacesWithPage(places_array, page, limit) {
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
+let currentPage=1
+function getPlacesWithPage(places_array,page,limit){
+    const startIndex= (page-1)*limit;
+    const endIndex= page*limit;
+
 
     let results = [];
     results = places_array.slice(startIndex, endIndex);
@@ -145,19 +151,36 @@ let selected_places = [];
 function checkSelectedPlaces() {
     if (this.checked) {
         selected_places.push(this.id)
-        document.getElementById('export-btn').style.visibility = "visible";
+        console.log(this.id);
+        document.getElementById('export-btn').disabled= false;
+        if(selected_places.length==places_array.length){    //if all elements are selected, 
+            document.getElementById('select-all-check').checked=true;   //make checked select all's checkbox
+        }
     }
 
-    else {
+    
+    else{
+        document.getElementById('select-all-check').checked=false;
         const index = selected_places.indexOf(this.id);
         if (index > -1) // only splice array when item is found
-            selected_places.splice(index, 1); // 2nd parameter means remove one item only
-        if (selected_places.length == 0)
-            document.getElementById('export-btn').style.visibility = "hidden";
+         selected_places.splice(index, 1); // 2nd parameter means remove one item only
+        if(selected_places.length==0)
+         document.getElementById('export-btn').disabled= true;
     }
+
+    if(document.getElementById('select-all-check').checked){
+        selected_places=[];
+        for(let i=0; i<places_array.length; i++){
+            selected_places.push('c'+places_array[i].place_id);
+        }
+
+    }
+    let page = currentPage;
+            getPlacesWithPage(places.results,page, 8);
+
 }
 document.getElementById('export-btn').addEventListener('click', click_export_button);
-async function click_export_button() {
+async function click_export_button()
     var base_url = "http://localhost:8080/get/place_detail?place_id="
     var csv = "Mekan adı, Puan, Değerlendirme Sayısı, Telefon, Adres\n"
     for (var place_id of selected_places) {
@@ -172,9 +195,19 @@ async function click_export_button() {
             })
     }
     downloadCSV(csv);
+}
+
+document.getElementById('select-all-check').addEventListener('click',click_select_all);
+async function click_select_all(){
+    if(!document.getElementById('select-all-check').checked){
+        selected_places=[];
+    }
 
 }
-function downloadCSV(csv) {
+
+
+function downloadCSV(csv){
+
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     hiddenElement.target = '_blank';
@@ -197,7 +230,7 @@ function fetchPlaceDetails(place_id) {
     place_review.innerHTML = "";
 
     let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
-    console.log("girdi")
+    
     sendRequest(URL, 'GET')
         .then(data => {
             fetchDetails(data);
@@ -259,7 +292,10 @@ function createPageButtons(places_array, limit) {
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             let page = parseInt(button.innerText);
-            getPlacesWithPage(places.results, page, 8);
+
+            currentPage=page;
+            getPlacesWithPage(places.results,page, 8);
+
         })
     })
 }
@@ -274,7 +310,15 @@ const place_weekday_text = document.getElementById('place-weekday-text');
 const place_type = document.getElementById('place-types');
 const place_review = document.getElementById('place-reviews');
 
-function fetchDetails(place_details_array) {
+
+function fetchDetails(place_details_array){
+    place_name.innerHTML="";
+    place_rating.innerHTML="";
+    place_address.innerHTML ="";
+    place_phone.innerHTML ="";
+    place_user_total_rating.innerHTML ="";
+    place_url.innerHTML = "";
+    place_url.href ="";
 
     let reviews = [];
     reviews = place_details_array.reviews;
