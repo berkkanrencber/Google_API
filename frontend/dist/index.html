@@ -4,18 +4,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Google API</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script type="module" src="frontend.js"></script>
     <link rel="stylesheet" href="output.css">
+    
 </head>
-
 <body>
+
     <div class="drawer drawer-end">
         <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content">
-            <div class="flex flex-col w-full lg:flex-row">
+            <div class="flex flex-col w-full lg:flex-row lg:w-full">
                 <div class="flex-grow h-full card bg-base-300 rounded-box place-items-center" id="inputs">
-                    <div class="mt-7" id="properties">
-                        <div class="form-control w-full " id="location-input">
+                    <div class="mt-7 w-3/4" id="properties">
+                        <div class="form-control w-full lg:w-full" id="location-input">
                             <label class="label">
                                 <span class="label-text">Location</span>
                             </label>
@@ -25,12 +28,12 @@
                         <div class="result-box" id="result-box">
                         </div>
                         <br>
-                        <div class="flex flex-col w-full lg:flex-row">
-                            <div id="type-input">
-                                <label class="label style-label">
+                        <div class="flex flex-col lg:flex-row">
+                            <div id="type-input" class="w-full lg:w-1/4">
+                                <label class="label style-label w-full">
                                     <span class="label-text">Place Type</span>
                                 </label>
-                                <select class="select select-bordered w-full max-w-xs mt-1" id="input-type">
+                                <select class="select select-bordered w-full mt-1" id="input-type">
                                     <option>Cafe</option>
                                     <option>Restaurant</option>
                                     <option>Bar</option>
@@ -38,34 +41,38 @@
                                 </select>
                             </div>
 
-                            <div class="form-control max-w-xs flex lg:mx-5" id="radius-input">
-                                <label class="label">
+                            <div class="form-control w-full lg:w-1/4 flex lg:mx-5" id="radius-input">
+                                <label class="label w-full">
                                     <span class="label-text">Radius</span>
                                     <input type="checkbox" class="toggle" unchecked id="radius-toggle" />
                                 </label>
-                                <input type="text" class="input input-group-xs input-bordered max-w-xs mb-2"
-                                    id="radius-input-text" />
+
+                                <input type="text" class="input input-group-md lg:input-group-xs input-bordered w-full mb-2" id="radius-input-text" />
 
                             </div>
-                            <div class="form-control max-w-xs lg:mr-5" id="rating-input">
-                                <label class="label">
+
+                            <div class="form-control w-full lg:w-1/4 lg:mr-5" id="rating-input">
+                                <label class="label w-full">
+
                                     <span class="label-text">Rating </span>
                                     <span><output id="rating-input-text-value">0</output></span>
                                     <!-- <input type="checkbox" class="toggle" unchecked id="rating-toggle" /> -->
                                 </label>
-                                <input type="range" value="0" min="0" max="5" step="0.1"
-                                    class="range self-center align-middle" id="rating-input-text">
+
+                                <input type="range" value="0" min="0" max="5" step="0.1" class="range self-center align-middle" id="rating-input-text">
                                 <!-- <input type="text" class="input input-group-xs input-bordered w-full max-w-xs"
                                     id="rating-input-text" /> -->
                             </div>
-                            <div class="form-control max-w-xs" id="total-rating-input">
-                                <label class="label">
+                            <div class="form-control w-full lg:w-1/4" id="total-rating-input">
+                                <label class="label w-full">
+
                                     <span class="label-text">Total Vote</span>
                                     <span><output id="total-rating-input-text-value">0</output></span>
                                     <!-- <input type="checkbox" class="toggle" unchecked id="total-rating-toggle" /> -->
                                 </label>
-                                <input type="range" value="0" min="0" max="1000" step="50"
-                                    class="range self-center align-middle" id="total-rating-input-text">
+
+                                <input type="range" value="0" min="0" max="1000" step="50" class="range self-center align-middle" id="total-rating-input-text">
+
                                 <!-- <input type="text" class="input input-group-xs input-bordered w-full max-w-xs"
                                     id="total-rating-input-text" /> -->
                             </div>
@@ -112,27 +119,39 @@
                             </tbody>
                         </table>
 
-                        <div class="join" id="paging-buttons"> <!-- pagination buttons -->
+
+
+                        <div class="join max-h-fit" id="paging-buttons" >  <!-- pagination buttons -->
+
                         </div>
                     </div>
                 </div>
             </div>
 
-            <script src="frontend.js"></script>
             <script type="module" src="geocoding.js"></script>
             <script type="module" src="place-list.js"></script>
             <script type="module" src="autocomplete.js"></script>
             <!-- Page content here -->
-            <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&v=weekly" defer></script>
+
+            <script
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNe8wTSIdnOBEKezvI0m9mZgSZ5qEsUUo&callback=initMap&v=weekly"
+                    defer
+            ></script>
+
         </div>
 
         <!-- Place Detail Side -->
         <div class="drawer-side">
             <label for="my-drawer-4" class="drawer-overlay"></label>
 
-            <div class="card lg:w-2/5 bg-base-100 shadow-xl p-5 w-full">
+            
+          
+            <div class="card lg:w-2/5 bg-base-100 shadow-xl p-5 w-full" id="card-sidebar">
+                <!-- <div class="flex justify-center mt-96" id="progress">
+                    <progress class="progress progress-primary w-56"></progress>
+                    </div> -->
+                <article class="md:gap-8 md:grid md:grid-cols-3" id="article">
 
-                <article class="md:gap-8 md:grid md:grid-cols-3">
                     <div class="col-span-3">
                         <div class="flex items-center mb-6 space-x-4 justify-between">
                             <div class="space-y-1 font-medium dark:text-white">

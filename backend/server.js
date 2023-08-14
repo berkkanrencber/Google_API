@@ -112,7 +112,7 @@ app.get('/get/autocomplete', (req,res) => {
         for(let i = 0; i < data.predictions.length; i++){
             responseData.predictions.push({
                 place_id : data.predictions[i].place_id,
-                description : data.predictions[i].description
+                description : data.predictions[i].description,
             })
         }
         res.json(responseData)
@@ -135,6 +135,18 @@ app.get('/get/place',(req,res) => {
     })
     .catch(err => {
         console.error(`Error: ${err}`);
+    })
+})
+
+app.get('/get/location', (req,res) => {
+    var place_id = req.query.place_id;
+    var url = `https://maps.googleapis.com/maps/api/geocode/json?place_id=${place_id}&key=${process.env.API_KEY}` 
+    sendRequest(url, 'GET')
+    .then(data => {
+        res.json(data.results[0].geometry.location)
+    })
+    .catch(err => {
+        console.log(`Error: ${err}`);
     })
 })
 

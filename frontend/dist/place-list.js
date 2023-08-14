@@ -1,7 +1,7 @@
 import { sendRequest } from "../send-request.js";
 import { place_types } from "./place-types.js";
-import { getLocationId } from "./autocomplete.js";
-import { getMarkedPlaceId,placeMarkerFromMap } from "./geocoding.js";
+import { getLocationId,getLocationLatLng } from "./autocomplete.js";
+import { getMarkedPlaceId,placeMarkerFromMap,deleteMarkers,setCenterOfMap,setCenterOfMapClick } from "./geocoding.js";
 
 let places;
 function clickRequest(){
@@ -17,6 +17,12 @@ function clickRequest(){
     sendRequest(URL, 'GET')
         .then(data => {   
             places = data;
+            if(Object.keys(getLocationLatLng()).length>0){
+                setCenterOfMap(getLocationLatLng(),(16-(radiusValue/500)));
+            }else{
+                setCenterOfMapClick(16-(radiusValue/500));
+            }
+            deleteMarkers();
             createMarker(places.results);
             places_array=places.results;
             createPageButtons(places.results,8);
@@ -35,8 +41,9 @@ document.getElementById('export-btn').disabled= true;
 
 function createMarker(places_array){
     for(let place of places_array){
-        placeMarkerFromMap(place.name,place.location);
+        placeMarkerFromMap(place.name,place.location,place.formatted_address,place.user_ratings_total,0);
     }
+    placeMarkerFromMap(places_array[places_array.length-1].name,places_array[places_array.length-1].location,places_array[places_array.length-1].formatted_address,places_array[places_array.length-1].user_ratings_total,1);
 }
 
 function loadingAnimation(){
@@ -169,10 +176,21 @@ function downloadCSV(csv){
     hiddenElement.download = 'Seçilen Mekanlar.csv';
     hiddenElement.click();
 }
+
+
 function fetchPlaceDetails(place_id){
-
+    
+    place_name.innerHTML="";
+    place_rating.innerHTML="";
+    place_address.innerHTML ="";
+    place_phone.innerHTML ="";
+    place_user_total_rating.innerHTML ="";
+    place_url.innerHTML = "";
+    place_url.href ="";
+    place_review.innerHTML="";
+    
     let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
-
+    
     sendRequest(URL, 'GET')
         .then(data => {   
             fetchDetails(data);
@@ -287,4 +305,5 @@ function fetchDetails(place_details_array){
     for(let i=0; i<reviews.length; i++){
         document.getElementById(`star-${reviews[i].rating}-${i}`).checked=true;
     }
+    
 }
