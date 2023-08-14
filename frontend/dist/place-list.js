@@ -17,7 +17,6 @@ function clickRequest(){
     sendRequest(URL, 'GET')
         .then(data => {   
             places = data;
-            console.log(getLocationLatLng())
             if(Object.keys(getLocationLatLng()).length>0){
                 setCenterOfMap(getLocationLatLng(),(16-(radiusValue/500)));
             }else{
@@ -40,8 +39,9 @@ document.getElementById('export-btn').style.visibility = "hidden";
 
 function createMarker(places_array){
     for(let place of places_array){
-        placeMarkerFromMap(place.name,place.location);
+        placeMarkerFromMap(place.name,place.location,place.formatted_address,place.user_ratings_total,0);
     }
+    placeMarkerFromMap(places_array[places_array.length-1].name,places_array[places_array.length-1].location,places_array[places_array.length-1].formatted_address,places_array[places_array.length-1].user_ratings_total,1);
 }
 
 function loadingAnimation(){
@@ -165,7 +165,7 @@ function fetchPlaceDetails(place_id){
     place_review.innerHTML="";
     
     let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
-    console.log("girdi")
+    
     sendRequest(URL, 'GET')
         .then(data => {   
             fetchDetails(data);
