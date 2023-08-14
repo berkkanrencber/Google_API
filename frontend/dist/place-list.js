@@ -24,6 +24,7 @@ function clickRequest(){
             }
             deleteMarkers();
             createMarker(places.results);
+            places_array=places.results;
             createPageButtons(places.results,8);
         })
         .catch(err => {
@@ -33,9 +34,10 @@ function clickRequest(){
     loadingAnimation();
   }
 }
-
+let places_array;
 document.getElementById('button-search-button').addEventListener('click', clickRequest);
-document.getElementById('export-btn').style.visibility = "hidden";
+document.getElementById('export-btn').disabled= true;
+
 
 function createMarker(places_array){
     for(let place of places_array){
@@ -65,7 +67,7 @@ function loadingAnimation(){
   </div>
 </div>`
 }
-
+let currentPage=1
 function getPlacesWithPage(places_array,page,limit){
     const startIndex= (page-1)*limit;
     const endIndex= page*limit;
@@ -113,16 +115,31 @@ let selected_places=[];
 function checkSelectedPlaces(){
     if(this.checked){
         selected_places.push(this.id)
-        document.getElementById('export-btn').style.visibility = "visible";
+        console.log(this.id);
+        document.getElementById('export-btn').disabled= false;
+        if(selected_places.length==places_array.length){    //if all elements are selected, 
+            document.getElementById('select-all-check').checked=true;   //make checked select all's checkbox
+        }
     }
     
     else{
+        document.getElementById('select-all-check').checked=false;
         const index = selected_places.indexOf(this.id);
         if (index > -1) // only splice array when item is found
          selected_places.splice(index, 1); // 2nd parameter means remove one item only
         if(selected_places.length==0)
-         document.getElementById('export-btn').style.visibility = "hidden";
+         document.getElementById('export-btn').disabled= true;
     }
+
+    if(document.getElementById('select-all-check').checked){
+        selected_places=[];
+        for(let i=0; i<places_array.length; i++){
+            selected_places.push('c'+places_array[i].place_id);
+        }
+    }
+    let page = currentPage;
+            getPlacesWithPage(places.results,page, 8);
+
 }
 document.getElementById('export-btn').addEventListener('click',click_export_button);
 async function click_export_button(){
@@ -140,8 +157,16 @@ async function click_export_button(){
         })
     }
     downloadCSV(csv);
+}
+
+document.getElementById('select-all-check').addEventListener('click',click_select_all);
+async function click_select_all(){
+    if(!document.getElementById('select-all-check').checked){
+        selected_places=[];
+    }
 
 }
+
 function downloadCSV(csv){
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
@@ -196,6 +221,7 @@ function createPageButtons(places_array,limit){
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             let page = parseInt(button.innerText);
+            currentPage=page;
             getPlacesWithPage(places.results,page, 8);
         })
     })
@@ -212,7 +238,13 @@ const place_type = document.getElementById('place-types');
 const place_review = document.getElementById('place-reviews');
 
 function fetchDetails(place_details_array){
-
+    place_name.innerHTML="";
+    place_rating.innerHTML="";
+    place_address.innerHTML ="";
+    place_phone.innerHTML ="";
+    place_user_total_rating.innerHTML ="";
+    place_url.innerHTML = "";
+    place_url.href ="";
     let reviews = [];
     reviews = place_details_array.reviews; 
 
