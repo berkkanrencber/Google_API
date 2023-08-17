@@ -12,8 +12,10 @@ let map;
 let markers=[];
 
 const refreshMap = document.querySelector('#button-reload-map');
+let inputBox = document.getElementById('autocomplete');
 refreshMap.addEventListener("click", ()=>{
   initMap();
+  inputBox.value="";
 })
 
 function initMap() {
