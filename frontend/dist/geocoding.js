@@ -11,6 +11,10 @@ let placeInfoWindow;
 let map;
 let markers=[];
 
+const refreshMap = document.querySelector('#button-reload-map');
+refreshMap.addEventListener("click", ()=>{
+  initMap();
+})
 
 function initMap() {
     const myLatlng = { lat: 40.99, lng: 29.07 };
@@ -134,5 +138,7 @@ export {
   setCenterOfMap,
   setCenterOfMapClick
 };
+
+
 
 window.initMap = initMap;
