@@ -105,6 +105,11 @@ function setSelectedLocationId(id){
   selectedLocationId = id;
 }
 
+export function setfirstClick(){
+  firstClick = false;
+}
+
+
 export function getLocationId(){
   return selectedLocationId;
 }
@@ -112,3 +117,4 @@ export function getLocationId(){
 export function getLocationLatLng(){
   return selectedLocationLatLng;
 }
+

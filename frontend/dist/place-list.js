@@ -1,13 +1,13 @@
 import { sendRequest } from "../send-request.js";
 import { place_types } from "./place-types.js";
-import { getLocationId, getLocationLatLng } from "./autocomplete.js";
+import { getLocationId, getLocationLatLng, setfirstClick } from "./autocomplete.js";
 import { getMarkedPlaceId, placeMarkerFromMap, deleteMarkers, setCenterOfMap, setCenterOfMapClick } from "./geocoding.js";
 
 let places;
 let current_places;
 function clickRequest() {
     if (document.getElementById('autocomplete').value != "") {
-
+        setfirstClick();
         var typeValue = document.getElementById('input-type');
         var radiusValue = document.getElementById('radius-input-text').value;
         var ratingValue = document.getElementById('rating-input-text').value;
