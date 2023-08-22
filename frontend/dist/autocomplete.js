@@ -1,5 +1,5 @@
 import { sendRequest } from "../send-request.js";
-import { setCenterOfMap } from "./geocoding.js";
+import { setCenterOfMap, getDisplay } from "./geocoding.js";
 
 let selectedLocationLatLng = {};
 let selectedLocationId;
@@ -19,7 +19,7 @@ let clikedOneOfResult=false;
 let firstClick=false;
 
 function searchLocations(){
-  if(!firstClick){
+  if(!firstClick && !getDisplay()){
     firstClick=true;
     clikedOneOfResult=false;
     searchProcess=true;
@@ -118,3 +118,6 @@ export function getLocationLatLng(){
   return selectedLocationLatLng;
 }
 
+export{
+  onChangeLocation,
+};

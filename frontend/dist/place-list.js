@@ -34,48 +34,52 @@ function clickRequest() {
                 console.error(err)
             })
 
+        document.getElementById('lbl-name').disabled = false;
+        document.getElementById('lbl-rating').disabled = false;
+        document.getElementById('lbl-vote').disabled = false;
+        document.getElementById('lbl-name').className = "btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent";
         loadingAnimation();
         var element = document.querySelector("#paging-buttons");
-        element.scrollIntoView();   
-        document.getElementById('lbl-name').addEventListener('click', function() {
-            places.results = sortElement(places.results.slice(), 'name'); 
+        element.scrollIntoView();
+        document.getElementById('lbl-name').addEventListener('click', function () {
+            places.results = sortElement(places.results.slice(), 'name');
             createPageButtons(places.results, 8);
-            document.getElementById('lbl-name').className="btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent";
-            document.getElementById('lbl-rating').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
-            document.getElementById('lbl-vote').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
+            document.getElementById('lbl-name').className = "btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent";
+            document.getElementById('lbl-rating').className = "btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
+            document.getElementById('lbl-vote').className = "btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
         });
-        document.getElementById('lbl-rating').addEventListener('click', function() {
-            places.results = sortElement(places.results.slice(), 'rating'); 
+        document.getElementById('lbl-rating').addEventListener('click', function () {
+            places.results = sortElement(places.results.slice(), 'rating');
             createPageButtons(places.results, 8);
-            document.getElementById('lbl-name').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent";
-            document.getElementById('lbl-rating').className="btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent"
-            document.getElementById('lbl-vote').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
-            
+            document.getElementById('lbl-name').className = "btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent";
+            document.getElementById('lbl-rating').className = "btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent"
+            document.getElementById('lbl-vote').className = "btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
+
         });
-        document.getElementById('lbl-vote').addEventListener('click', function() {
-            places.results = sortElement(places.results.slice(), 'vote'); 
+        document.getElementById('lbl-vote').addEventListener('click', function () {
+            places.results = sortElement(places.results.slice(), 'vote');
             createPageButtons(places.results, 8);
-            document.getElementById('lbl-name').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent";
-            document.getElementById('lbl-rating').className="btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
-            document.getElementById('lbl-vote').className="btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent"
+            document.getElementById('lbl-name').className = "btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent";
+            document.getElementById('lbl-rating').className = "btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent"
+            document.getElementById('lbl-vote').className = "btn-primary bg-transparent text-purple-600 hover:text-purple-600 hover:bg-transparent"
         });
 
     }
 
-    selected_places=[];
-    document.getElementById('export-btn').disabled= true;
+    selected_places = [];
+    document.getElementById('export-btn').disabled = true;
 
 }
 document.getElementById('button-search-button').addEventListener('click', clickRequest);
-document.getElementById('export-btn').disabled= true;
+document.getElementById('export-btn').disabled = true;
 
 
-function createMarker(places_array){
-    for(let place of places_array){
-        placeMarkerFromMap(place.name,place.location,place.formatted_address,place.user_ratings_total,0);
+function createMarker(places_array) {
+    for (let place of places_array) {
+        placeMarkerFromMap(place.name, place.location, place.formatted_address, place.user_ratings_total, 0);
 
     }
-    placeMarkerFromMap(places_array[places_array.length-1].name,places_array[places_array.length-1].location,places_array[places_array.length-1].formatted_address,places_array[places_array.length-1].user_ratings_total,1);
+    placeMarkerFromMap(places_array[places_array.length - 1].name, places_array[places_array.length - 1].location, places_array[places_array.length - 1].formatted_address, places_array[places_array.length - 1].user_ratings_total, 1);
 }
 
 function loadingAnimation() {
@@ -100,11 +104,11 @@ function loadingAnimation() {
 </div>`
 }
 
-let currentPage=1
-function getPlacesWithPage(places_array,page,limit){
+let currentPage = 1
+function getPlacesWithPage(places_array, page, limit) {
 
-    const startIndex= (page-1)*limit;
-    const endIndex= page*limit;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
 
     let results = [];
@@ -144,42 +148,42 @@ function getPlacesWithPage(places_array,page,limit){
         document.getElementsByClassName('drawer-button')[i].param = document.getElementsByClassName('drawer-button')[i].id;
         document.getElementsByClassName('checkbox')[i].addEventListener('change', checkSelectedPlaces);
     }
-    document.getElementById('select-all-check').disabled=false;
+    document.getElementById('select-all-check').disabled = false;
 }
 
 let selected_places = [];
 function checkSelectedPlaces() {
     if (this.checked) {
         selected_places.push(this.id)
-        document.getElementById('export-btn').disabled= false;
-        if(selected_places.length==places.results.length){    //if all elements are selected, 
-            document.getElementById('select-all-check').checked=true;   //make checked select all's checkbox
+        document.getElementById('export-btn').disabled = false;
+        if (selected_places.length == places.results.length) {    //if all elements are selected, 
+            document.getElementById('select-all-check').checked = true;   //make checked select all's checkbox
         }
     }
 
-    
-    else{
-        document.getElementById('select-all-check').checked=false;
+
+    else {
+        document.getElementById('select-all-check').checked = false;
         const index = selected_places.indexOf(this.id);
         if (index > -1) // only splice array when item is found
-         selected_places.splice(index, 1); // 2nd parameter means remove one item only
-        if(selected_places.length==0)
-         document.getElementById('export-btn').disabled= true;
+            selected_places.splice(index, 1); // 2nd parameter means remove one item only
+        if (selected_places.length == 0)
+            document.getElementById('export-btn').disabled = true;
     }
 
-    if(document.getElementById('select-all-check').checked){
-        selected_places=[];
-        for(let i=0; i<places.results.length; i++){
-            selected_places.push('c'+places.results[i].place_id);
+    if (document.getElementById('select-all-check').checked) {
+        selected_places = [];
+        for (let i = 0; i < places.results.length; i++) {
+            selected_places.push('c' + places.results[i].place_id);
         }
 
     }
     let page = currentPage;
-            getPlacesWithPage(places.results,page, 8);
+    getPlacesWithPage(places.results, page, 8);
 
 }
 document.getElementById('export-btn').addEventListener('click', click_export_button);
-async function click_export_button(){
+async function click_export_button() {
     var base_url = "http://localhost:8080/get/place_detail?place_id="
     var csv = "Mekan adı, Puan, Değerlendirme Sayısı, Telefon, Adres\n"
     for (var place_id of selected_places) {
@@ -196,16 +200,16 @@ async function click_export_button(){
     downloadCSV(csv);
 }
 
-document.getElementById('select-all-check').addEventListener('click',click_select_all);
-async function click_select_all(){
-    if(!document.getElementById('select-all-check').checked){
-        selected_places=[];
+document.getElementById('select-all-check').addEventListener('click', click_select_all);
+async function click_select_all() {
+    if (!document.getElementById('select-all-check').checked) {
+        selected_places = [];
     }
 
 }
 
 
-function downloadCSV(csv){
+function downloadCSV(csv) {
 
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
@@ -229,7 +233,7 @@ function fetchPlaceDetails(place_id) {
     place_review.innerHTML = "";
 
     let URL = `http://localhost:8080/get/place_detail?place_id=${place_id.currentTarget.param}`
-    
+
     sendRequest(URL, 'GET')
         .then(data => {
             fetchDetails(data);
@@ -255,7 +259,7 @@ function sortElement(places_array, label) {
             return 0;
         });
     }
-    else if(label=='vote'){
+    else if (label == 'vote') {
         places_array.sort((a, b) => { //
             return b.user_ratings_total - a.user_ratings_total
         });
@@ -266,7 +270,7 @@ function sortElement(places_array, label) {
         });
     }
     return places_array;
-    
+
 }
 
 function createPageButtons(places_array, limit) {
@@ -291,8 +295,8 @@ function createPageButtons(places_array, limit) {
         button.addEventListener('click', () => {
             let page = parseInt(button.innerText);
 
-            currentPage=page;
-            getPlacesWithPage(places.results,page, 8);
+            currentPage = page;
+            getPlacesWithPage(places.results, page, 8);
 
         })
     })
@@ -309,14 +313,14 @@ const place_type = document.getElementById('place-types');
 const place_review = document.getElementById('place-reviews');
 
 
-function fetchDetails(place_details_array){
-    place_name.innerHTML="";
-    place_rating.innerHTML="";
-    place_address.innerHTML ="";
-    place_phone.innerHTML ="";
-    place_user_total_rating.innerHTML ="";
+function fetchDetails(place_details_array) {
+    place_name.innerHTML = "";
+    place_rating.innerHTML = "";
+    place_address.innerHTML = "";
+    place_phone.innerHTML = "";
+    place_user_total_rating.innerHTML = "";
     place_url.innerHTML = "";
-    place_url.href ="";
+    place_url.href = "";
 
     let reviews = [];
     reviews = place_details_array.reviews;
@@ -380,3 +384,25 @@ function fetchDetails(place_details_array){
     }
 
 }
+
+function resetMap() {
+    let placeholder = document.querySelector("#data-output");
+    let out = "";
+    placeholder.innerHTML = out;
+    places = [];
+    createPageButtons(places, 1);
+    document.getElementById('select-all-check').disabled = true;
+    document.getElementById('export-btn').disabled = true;
+    document.getElementById('lbl-name').disabled = true;
+    document.getElementById('lbl-rating').disabled = true;
+    document.getElementById('lbl-vote').disabled = true;
+    document.getElementById('lbl-name').className = "btn-primary bg-transparent hover:text-purple-600 hover:bg-transparent";
+    document.getElementById('lbl-rating').className = "btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent";
+    document.getElementById('lbl-vote').className = "btn-primary bg-transparent  hover:text-purple-600 hover:bg-transparent";
+}
+
+export {
+    resetMap,
+};
+
+

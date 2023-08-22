@@ -1,4 +1,6 @@
 import { sendRequest } from "../send-request.js";
+import {resetMap} from "./place-list.js";
+import {onChangeLocation} from "./autocomplete.js";
 
 
 let selectedLat;
@@ -10,12 +12,15 @@ let infoWindow;
 let placeInfoWindow;
 let map;
 let markers=[];
+let display=false;
 
 const refreshMap = document.querySelector('#button-reload-map');
 let inputBox = document.getElementById('autocomplete');
 refreshMap.addEventListener("click", ()=>{
   initMap();
   inputBox.value="";
+  resetMap();
+  display=false;
 })
 
 function initMap() {
@@ -39,6 +44,7 @@ function initMap() {
       sendRequest(url,'GET')
       .then(data => {
         document.getElementById('autocomplete').value = data.result.formatted_address;
+        display=true;
         selectedPlaceId = data.result.place_id;
         placeMarker(mapsMouseEvent.latLng);
         
@@ -132,13 +138,18 @@ function deleteMarkers(){
   markers=[];
 }
 
+function getDisplay(){
+  return display;
+}
+
 
 export {
   getMarkedPlaceId,
   placeMarkerFromMap,
   deleteMarkers,
   setCenterOfMap,
-  setCenterOfMapClick
+  setCenterOfMapClick,
+  getDisplay,
 };
 
 
